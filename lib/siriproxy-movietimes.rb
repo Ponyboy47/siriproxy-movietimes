@@ -8,7 +8,7 @@ end
    listen_for /Movie times/i do
       say "Getting movie times for Spring, Tx"#{location.city}, #{location.state}"
       movieShowTimes = MovieShowTimes::Crawler.new({ :location => 'Spring' })
-      theaters = movieShowtimes.theaters
+      theaters = movieShowTimes.theaters
       view1 = SiriAddViews.new
       view2 = SiriAddViews.new
       view3 = SiriAddViews.new
