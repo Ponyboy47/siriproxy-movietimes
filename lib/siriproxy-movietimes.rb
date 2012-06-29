@@ -21,34 +21,35 @@ end
       movieTimesLines1 = Array.new
       movieTimesLines2 = Array.new
       movieTimesLines3 = Array.new
-      movies1 = theaters["#{theaters[0]['name']}"]['movies']
+      say "#{theaters}"
+      movies1 = theaters["#{theaters[0][:name]}"][:movies]
       x = 0
       until x == (movies1.length - 1)
-         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x]['name']}")
-         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x]['times']}")
+         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:name]}")
+         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:times]}")
          x = x+1
       end
-      movieTimesList1 = SiriAnswer.new("#{theaters[0]['name']}", [movieTimesLines1])
+      movieTimesList1 = SiriAnswer.new("#{theaters[0][:name]}", [movieTimesLines1])
       view1.views << SiriAnswerSnippet.new([movieTimesList1])
       
-      movies2 = theaters["#{theaters[1]['name']}"]['movies']
+      movies2 = theaters["#{theaters[1][:name]}"][:movies]
       x = 0
       until x == (movies2.length - 1)
-         movieTimesLines2 << SiriAnswerLine.new("#{movies2[x]['name']}")
-         movieTimesLines2 << SiriAnswerLine.new("#{movies2[x]['times']}")
+         movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:name]}")
+         movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:times]}")
          x = x+1
       end
-      movieTimesList2 = SiriAnswer.new("#{theaters[1]['name']}", [movieTimesLines2])
+      movieTimesList2 = SiriAnswer.new("#{theaters[1][:name]}", [movieTimesLines2])
       view2.views << SiriAnswerSnippet.new([movieTimesList2])
       
-      movies3 = theaters["#{theaters[2]['name']}"]['movies']
+      movies3 = theaters["#{theaters[2][:name]}"][:movies]
       x = 0
       until x == (movies3.length - 1)
-         movieTimesLines3 << SiriAnswerLine.new("#{movies3[x]['name']}")
-         movieTimesLines3 << SiriAnswerLine.new("#{movies3[x]['times']}")
+         movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:name]}")
+         movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:times]}")
          x = x+1
       end
-      movieTimesList3 = SiriAnswer.new("#{theaters[2]['name']}", [movieTimesLines3])
+      movieTimesList3 = SiriAnswer.new("#{theaters[2][:name]}", [movieTimesLines3])
       view3.views << SiriAnswerSnippet.new([movieTimesList3])
       
       send_object view1
