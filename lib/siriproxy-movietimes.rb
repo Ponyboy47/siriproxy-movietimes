@@ -7,7 +7,7 @@ def initialize(config)
 end
    listen_for /Movie times/i do
       say "Getting movie times for Spring, Tx"#{location.city}, #{location.state}"
-      movieShowTimes = MovieShowTimes::Crawler.new({ :location => 'Spring' })
+      movieShowTimes = MovieShowTimes::Crawler.new({ :location => 'Spring%2C+TX' })##{location.city}%2C+#{location.state}' })
       theaters = movieShowTimes.theaters
       view1 = SiriAddViews.new
       view2 = SiriAddViews.new
