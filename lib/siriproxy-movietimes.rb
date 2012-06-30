@@ -21,9 +21,7 @@ end
       movieTimesLines1 = Array.new
       movieTimesLines2 = Array.new
       movieTimesLines3 = Array.new
-      say "#{theaters[0][0]}"
-      #say "#{theaters[0][0][:name]}"
-      #say "#{theaters[0][:movies]}"
+      say "#{theaters[0][:movies]}"
       #say "#{theaters[0][:movies][:name]}"
       movies1 = theaters[0][0]
       x = 0
