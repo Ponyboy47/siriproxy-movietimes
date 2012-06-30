@@ -21,9 +21,13 @@ end
       movieTimesLines1 = Array.new
       movieTimesLines2 = Array.new
       movieTimesLines3 = Array.new
+      say "#{theaters[0][0]}"
+      #say "#{theaters[0][0][:name]}"
+      #say "#{theaters[0][:movies]}"
+      #say "#{theaters[0][:movies][:name]}"
       movies1 = theaters[0][0]
       x = 0
-      until x == (movies1.length - 1)
+      until x == (movies1.count - 1)
          movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:name]}")
          movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:times]}")
          x = x+1
