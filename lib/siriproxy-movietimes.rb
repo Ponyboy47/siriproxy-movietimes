@@ -1,13 +1,13 @@
 require 'cora'
 require 'siri_objects'
-require 'movie_show_times'
+require 'google_movies47'
 
 class SiriProxy::Plugin::MovieTimes < SiriProxy::Plugin
 def initialize(config)
 end
    listen_for /Movie times/i do
       say "Getting movie times for Spring, Tx"#{location.city}, #{location.state}"
-      movieShowTimes = MovieShowTimes::Crawler.new({ :location => 'Houston' })##{location.city}%2C+#{location.state}' })
+      movieShowTimes = GoogleMovies47::Crawler.new({ :city => 'Spring', :state => 'Texas'})##{location.city}%2C+#{location.state}' })
       theaters = movieShowTimes.theaters
       view1 = SiriAddViews.new
       view2 = SiriAddViews.new
