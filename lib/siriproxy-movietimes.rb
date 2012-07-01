@@ -6,8 +6,8 @@ class SiriProxy::Plugin::MovieTimes < SiriProxy::Plugin
 def initialize(config)
 end
    listen_for /Movie times/i do
-      say "Getting movie times for Spring, Tx"#{location.city}, #{location.state}"
-      movieShowTimes = GoogleMovies47::Crawler.new({ :city => 'Spring', :state => 'Texas'})##{location.city}%2C+#{location.state}' })
+      say "Getting movie times for #{location.city}, #{location.state}"
+      movieShowTimes = GoogleMovies47::Crawler.new({ :city => '#{location.city}', :state => '#{location.state}' })
       theaters = movieShowTimes.theaters
       view1 = SiriAddViews.new
       view2 = SiriAddViews.new
