@@ -5,6 +5,11 @@ require 'google_movies47'
 class SiriProxy::Plugin::MovieTimes < SiriProxy::Plugin
 def initialize(config)
 end
+
+   filter "SetRequestOrigin", direction: :from_iphone do |object|
+     puts "[Info - User Location] lat: #{object["properties"]["latitude"]}, long: #{object["properties"]["longitude"]}"
+   end
+
    listen_for /Movie times/i do
       say "#{location.country}"
       say "Getting movie times for #{location.city}, #{location.state}"
