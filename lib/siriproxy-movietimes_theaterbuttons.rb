@@ -12,8 +12,11 @@ filter "StartRequest", direction: :from_iphone do |object|
    object = false
    request_completed 
 end
-def createButton(text,more)
-    utterance = "#{text}"
+filter "SetRequestOrigin", direction: :from_iphone do |object|
+  puts "[Info - User Location] lat: #{object["properties"]["latitude"]}, long: #{object["properties"]["longitude"]}"
+end
+def createButton(theater,more)
+    utterance = "#{theater}"
     startRequest = SiriStartRequest.new(utterance,true,false)
     sendCommand = SiriSendCommands.new
     sendCommand.commands << startRequest
@@ -21,42 +24,19 @@ def createButton(text,more)
     button.commands << sendCommand
     return button
 end
-def getTheaters(zip)
-   doc = Nokogiri::HTML(open("http://www.fandango.com/#{zip}_movietimes"))
-   theater = Array.new
-   @theaters = doc.css('select.allTheaters  option').each do |item|
-      theater << "#{item.content}"
-   end
-   theater.delete_at(0)
-return theater
-end
-def showTimes(loc,more)
-   if more == true
-      theaters = getTheaters(location.postal_code)
-      buttons = SiriAddViews.new
-      buttons.make_root(last_ref_id)
-      utterance = SiriAssistantUtteranceView.new("Here are more theaters..")
-      buttons.views << utterance
-      buttons.views << createButton("#{theaters[5]}",false)
-      buttons.views << createButton("#{theaters[6]}",false)
-      buttons.views << createButton("#{theaters[7]}",false)
-      buttons.views << createButton("#{theaters[8]}",false)
-      buttons.views << createButton("#{theaters[9]}",false)
-      send_object buttons
-   end
-end
    listen_for /Movie times/i do
       say "Getting movie times for #{location.city}, #{location.state}"
-      theaters = getTheaters(location.postal_code)
+      movieShowTimes = GoogleMovies47::Crawler.new({ :city => '#{location.city}', :state => '#{location.state}' })
+      theaters = movieShowTimes.theaters
       buttons = SiriAddViews.new
       buttons.make_root(last_ref_id)
       say "Which theater would you like?"
-      buttons.views << createButton("#{theaters[0]}",false)
-      buttons.views << createButton("#{theaters[1]}",false)
-      buttons.views << createButton("#{theaters[2]}",false)
-      buttons.views << createButton("#{theaters[3]}",false)
-      buttons.views << createButton("#{theaters[4]}",false)
-      buttons.views << createButton("More Theaters..",true)
+      buttons.views << createButton("#{theaters[0][:name]}",false)
+      buttons.views << createButton("#{theaters[1][:name]}",false)
+      buttons.views << createButton("#{theaters[2][:name]}",false)
+      buttons.views << createButton("#{theaters[3][:name]}",false)
+      buttons.views << createButton("#{theaters[4][:name]}",false)
+      buttons.views << createButton("#{theaters[5][:name]}",false)
       send_object buttons
       request_completed
    end

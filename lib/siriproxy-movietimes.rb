@@ -61,6 +61,55 @@ end
       send_object view1
       send_object view2
       send_object view3
+      if confirm "Would you like to see more theaters?"
+        say "Here are the next three theaters..."
+        view4 = SiriAddViews.new
+        view5 = SiriAddViews.new
+        view6 = SiriAddViews.new
+        view4.make_root(last_ref_id)
+        view5.make_root(last_ref_id)
+        view6.make_root(last_ref_id)
+        view4.scrollToTop = true
+        view5.scrollToTop = false
+        view6.scrollToTop = false
+        movieTimesLines4 = Array.new
+        movieTimesLines5 = Array.new
+        movieTimesLines6 = Array.new
+      
+        movies4 = theaters[3][:movies]
+        x = 0
+        until x == (movies4.count - 1)
+           movieTimesLines4 << SiriAnswerLine.new("#{movies4[x][:name]}")
+           movieTimesLines4 << SiriAnswerLine.new("#{movies4[x][:times]}")
+          x = x+1
+        end
+        movieTimesList4 = SiriAnswer.new("#{theaters[3][:name]}", [movieTimesLines4])
+        view4.views << SiriAnswerSnippet.new([movieTimesList4])
+        
+        movies5 = theaters[4][:movies]
+        x = 0
+        until x == (movies5.count - 1)
+           movieTimesLines5 << SiriAnswerLine.new("#{movies5[x][:name]}")
+           movieTimesLines5 << SiriAnswerLine.new("#{movies5[x][:times]}")
+           x = x+1
+        end
+        movieTimesList5 = SiriAnswer.new("#{theaters[4][:name]}", [movieTimesLines5])
+        view5.views << SiriAnswerSnippet.new([movieTimesList5])
+        
+        movies6 = theaters[5][:movies]
+        x = 0
+        until x == (movies6.count - 1)
+           movieTimesLines6 << SiriAnswerLine.new("#{movies6[x][:name]}")
+           movieTimesLines6 << SiriAnswerLine.new("#{movies6[x][:times]}")
+           x = x+1
+        end
+        movieTimesList6 = SiriAnswer.new("#{theaters[5][:name]}", [movieTimesLines6])
+        view6.views << SiriAnswerSnippet.new([movieTimesList6])
+        
+        send_object view4
+        send_object view5
+        send_object view6
+      end
       request_completed
    end
 end
