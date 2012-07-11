@@ -24,9 +24,12 @@ end
       view1.scrollToTop = true
       view2.scrollToTop = false
       view3.scrollToTop = false
-      movieTimesLines1 = Array.new
-      movieTimesLines2 = Array.new
-      movieTimesLines3 = Array.new
+      movieTimesLines1 = []
+      movies1 = []
+      movieTimesLines2 = []
+      movies2 = []
+      movieTimesLines3 = []
+      movies3 = []
       
       movies1 = theaters[0][:movies]
       x = 0
@@ -72,9 +75,12 @@ end
         view4.scrollToTop = true
         view5.scrollToTop = false
         view6.scrollToTop = false
-        movieTimesLines4 = Array.new
-        movieTimesLines5 = Array.new
-        movieTimesLines6 = Array.new
+      movieTimesLines4 = []
+      movies4 = []
+      movieTimesLines5 = []
+      movies5 = []
+      movieTimesLines6 = []
+      movies6 = []
       
         movies4 = theaters[3][:movies]
         x = 0
