@@ -31,7 +31,7 @@ end
       movieTimesLines1 = Array.new
       movieTimesLines2 = Array.new
       movieTimesLines3 = Array.new
-      
+      say "#{theaters}"
       movies1 = theaters[0][:movies]
       x = 0
       until x == (movies1.count - 1)
