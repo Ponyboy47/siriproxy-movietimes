@@ -13,12 +13,12 @@ end
    listen_for /Movie times/i do
       if location.country == "United States"
         say "Getting movie times for #{location.city}, #{location.state}"
-        movieShowTimes = GoogleMovies47::Crawler.new({ :city => '#{location.city}', :state => '#{location.state}' })
+        @movieShowTimes = GoogleMovies47::Crawler.new({ :city => '#{location.city}', :state => '#{location.state}' })
       else
         say "Getting movie times for #{location.city}, #{location.country}"
-        movieShowTimes = GoogleMovies47::Crawler.new({ :city => '#{location.city}', :state => '#{location.country}' })
+        @movieShowTimes = GoogleMovies47::Crawler.new({ :city => '#{location.city}', :state => '#{location.country}' })
       end
-      theaters = movieShowTimes.theaters
+      theaters = @movieShowTimes.theaters
       view1 = SiriAddViews.new
       view2 = SiriAddViews.new
       view3 = SiriAddViews.new
