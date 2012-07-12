@@ -11,9 +11,13 @@ end
    end
 
    listen_for /Movie times/i do
-      say "#{location.country}"
-      say "Getting movie times for #{location.city}, #{location.state}"
-      movieShowTimes = GoogleMovies47::Crawler.new({ :city => '#{location.city}', :state => '#{location.state}' })
+      if location.country == "United States"
+        say "Getting movie times for #{location.city}, #{location.state}"
+        movieShowTimes = GoogleMovies47::Crawler.new({ :city => '#{location.city}', :state => '#{location.state}' })
+      else
+        say "Getting movie times for #{location.city}, #{location.country}"
+        movieShowTimes = GoogleMovies47::Crawler.new({ :city => '#{location.city}', :state => '#{location.country}' })
+      end
       theaters = movieShowTimes.theaters
       view1 = SiriAddViews.new
       view2 = SiriAddViews.new
@@ -24,13 +28,10 @@ end
       view1.scrollToTop = true
       view2.scrollToTop = false
       view3.scrollToTop = false
-      movieTimesLines1 = []
-      movies1 = []
-      movieTimesLines2 = []
-      movies2 = []
-      movieTimesLines3 = []
-      movies3 = []
-      
+      movieTimesLines1 = Array.new
+      movieTimesLines2 = Array.new
+      movieTimesLines3 = Array.new
+      say "#{theaters[0][:movies]}"
       movies1 = theaters[0][:movies]
       x = 0
       until x == (movies1.count - 1)
@@ -75,12 +76,9 @@ end
         view4.scrollToTop = true
         view5.scrollToTop = false
         view6.scrollToTop = false
-      movieTimesLines4 = []
-      movies4 = []
-      movieTimesLines5 = []
-      movies5 = []
-      movieTimesLines6 = []
-      movies6 = []
+        movieTimesLines4 = Array.new
+        movieTimesLines5 = Array.new
+        movieTimesLines6 = Array.new
       
         movies4 = theaters[3][:movies]
         x = 0
