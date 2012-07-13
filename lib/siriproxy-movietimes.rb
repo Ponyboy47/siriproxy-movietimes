@@ -37,7 +37,7 @@ end
       until x == (movies1.count - 1)
          y = 0
          movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:name]}")
-         until y == (movies1[:times].count - 1)
+         until y == (movies1[x][:times].count - 1)
             movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:times][y]}")
             y = y + 1
          end
@@ -50,9 +50,9 @@ end
       x = 0
       until x == (movies2.count - 1)
          y = 0
-         movieTimesLines2 << SiriAnswerLine.new("#{movies2[:name]}")
-         until y == (movies2[:times].count - 1)
-            movieTimesLines2 << SiriAnswerLine.new("#{movies2[:times][y]}")
+         movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:name]}")
+         until y == (movies2[x][:times].count - 1)
+            movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:times][y]}")
             y = y + 1
          end
          x = x+1
@@ -64,9 +64,9 @@ end
       x = 0
       until x == (movies3.count - 1)
          y = 0
-         movieTimesLines3 << SiriAnswerLine.new("#{movies3[:name]}")
-         until y == (movies3[:times].count - 1)
-            movieTimesLines3 << SiriAnswerLine.new("#{movies3[:times][y]}")
+         movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:name]}")
+         until y == (movies3[x][:times].count - 1)
+            movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:times][y]}")
             y = y + 1
          end
          x = x+1
@@ -97,9 +97,9 @@ end
         x = 0
         until x == (movies4.count - 1)
            y = 0
-           movieTimesLines4 << SiriAnswerLine.new("#{movies4[:name]}")
-           until y == (movies4[:times].count - 1)
-              movieTimesLines4 << SiriAnswerLine.new("#{movies4[:times][y]}")
+           movieTimesLines4 << SiriAnswerLine.new("#{movies4[x][:name]}")
+           until y == (movies4[x][:times].count - 1)
+              movieTimesLines4 << SiriAnswerLine.new("#{movies4[x][:times][y]}")
               y = y + 1
            end
           x = x+1
@@ -111,9 +111,9 @@ end
         x = 0
         until x == (movies5.count - 1)
            y = 0
-           movieTimesLines5 << SiriAnswerLine.new("#{movies5[:name]}")
-           until y == (movies5[:times].count - 1)
-              movieTimesLines5 << SiriAnswerLine.new("#{movies5[:times][y]}")
+           movieTimesLines5 << SiriAnswerLine.new("#{movies5[x][:name]}")
+           until y == (movies5[x][:times].count - 1)
+              movieTimesLines5 << SiriAnswerLine.new("#{movies5[x][:times][y]}")
               y = y + 1
            end
            x = x+1
@@ -125,9 +125,9 @@ end
         x = 0
         until x == (movies6.count - 1)
            y = 0
-           movieTimesLines6 << SiriAnswerLine.new("#{movies6[:name]}")
-           until y == (movies6[:times].count - 1)
-              movieTimesLines6 << SiriAnswerLine.new("#{movies6[:times][y]}")
+           movieTimesLines6 << SiriAnswerLine.new("#{movies6[x][:name]}")
+           until y == (movies6[x][:times].count - 1)
+              movieTimesLines6 << SiriAnswerLine.new("#{movies6[x][:times][y]}")
               y = y + 1
            end
            movieTimesLines6 << SiriAnswerLine.new("#{movies6[:times]}")
