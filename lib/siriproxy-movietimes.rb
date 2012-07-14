@@ -16,6 +16,7 @@ end
     movieTimesLines1 = []
     movieTimesLines2 = []
     movieTimesLines3 = []
+    movieTimesList = []
     
     if theaters[current].movies != nil
       movies1 = theaters[current].movies
