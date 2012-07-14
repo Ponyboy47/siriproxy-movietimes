@@ -13,46 +13,51 @@ end
     view = SiriAddViews.new
     view.make_root(last_ref_id)
     view.scrollToTop = true
-    movieTimesLines1 = []
-    movieTimesLines2 = []
-    movieTimesLines3 = []
-  
-    movies1 = theaters[current].movies
-    x = 0
-    until x == (movies1.length - 1)
-      movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].name}")
-      movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times}")
-      x = x+1
+    movieTimesLines = []
+    
+    if theaters[current].movies != nil
+      movies1 = theaters[current].movies
+      x = 0
+      until x == (movies1.length - 1)
+        movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].name}")
+        movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times}")
+        x = x+1
+      end
+      movieTimesList << SiriAnswer.new("#{theaters[current].name}", movieTimesLines1)
     end
-    movieTimesList1 = SiriAnswer.new("#{theaters[current].name}", movieTimesLines1)
     
     current = current + 1
-    movies2 = theaters[current].movies
-    x = 0
-    until x == (movies2.length - 1)
-      movieTimesLines2 << SiriAnswerLine.new("#{movies2[x].name}")
-      movieTimesLines2 << SiriAnswerLine.new("#{movies2[x].times}")
-      x = x+1
+    if theaters[current].movies != nil
+      movies2 = theaters[current].movies
+      x = 0
+      until x == (movies2.length - 1)
+        movieTimesLines2 << SiriAnswerLine.new("#{movies2[x].name}")
+        movieTimesLines2 << SiriAnswerLine.new("#{movies2[x].times}")
+        x = x+1
+      end
+      movieTimesList << SiriAnswer.new("#{theaters[current].name}", movieTimesLines2)
     end
-    movieTimesList2 = SiriAnswer.new("#{theaters[current].name}", movieTimesLines2)
     
     current = current + 1
-    movies3 = theaters[current].movies
-    x = 0
-    until x == (movies3.length - 1)
-      movieTimesLines3 << SiriAnswerLine.new("#{movies3[x].name}")
-      movieTimesLines3 << SiriAnswerLine.new("#{movies3[x].times}")
-      x = x+1
+    if theaters[current].movies != nil
+     movies3 = theaters[current].movies
+      x = 0
+      until x == (movies3.length - 1)
+        movieTimesLines3 << SiriAnswerLine.new("#{movies3[x].name}")
+        movieTimesLines3 << SiriAnswerLine.new("#{movies3[x].times}")
+        x = x+1
+      end
+      movieTimesList << SiriAnswer.new("#{theaters[current].name}", movieTimesLines3)
     end
-    movieTimesList3 = SiriAnswer.new("#{theaters[current].name}", movieTimesLines3)
-    view.views << SiriAnswerSnippet.new([movieTimesList1,movieTimesList2,movieTimesList3])
-    
-    return view
+    if movieTimesList != nil
+      view.views << SiriAnswerSnippet.new(movieTimesList)
+      return view
+    else
+      say "I'm sorry but there are no more theaters near #{location.city}."
+      request_completed
+    end
   end
-def sendIt(object)
-  sleep 3
-  send_object object
-end
+  
    listen_for /Movie times/i do
       if location.country == "United States"
         say "Getting movie times for #{location.city}, #{location.state}"
@@ -64,11 +69,15 @@ end
       theaters = movieShowTimes.movies_theaters
       shows = getEverything(theaters,0)
       
-      sendIt(shows)
+      send_object shows
+      
       more = confirm "Would you like to see more theaters?"
-      if more
-        shows1 = getEverything(theaters,3)
-        sendIt(shows1)
+      x = 3
+      until more == false
+        shows1 = getEverything(theaters,x)
+        send_object shows1
+        more = confirm "Would you like to see more theaters?"
+        x = x + 3
       end
       request_completed
    end
