@@ -10,7 +10,6 @@ end
      puts "[Info - User Location] lat: #{object["properties"]["latitude"]}, long: #{object["properties"]["longitude"]}"
    end
   def getEverything(theaters,first)
-    sleep 3
     view = SiriAddViews.new
     view.make_root(last_ref_id)
     view.scrollToTop = true
@@ -48,7 +47,10 @@ end
     
     return view
   end
-
+def sendIt(object)
+  sleep 3
+  send_object object
+end
    listen_for /Movie times/i do
       if location.country == "United States"
         say "Getting movie times for #{location.city}, #{location.state}"
@@ -60,13 +62,11 @@ end
       theaters = movieShowTimes.movies_theaters
       shows = getEverything(theaters,0)
       
-      send_object shows
+      sendIt(shows)
       more = confirm "Would you like to see more theaters?"
       if more
         shows1 = getEverything(theaters,3)
-        send_object shows1
-      else
-        say "Have a nice day."
+        sendIt(shows1)
       end
       request_completed
    end
