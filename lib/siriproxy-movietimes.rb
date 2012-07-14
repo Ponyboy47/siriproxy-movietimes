@@ -1,6 +1,6 @@
 require 'cora'
 require 'siri_objects'
-require 'google_movies47'
+require 'google_showtimes'
 
 class SiriProxy::Plugin::MovieTimes < SiriProxy::Plugin
 def initialize(config)
@@ -33,37 +33,37 @@ end
         moreTheaters1 = false
       end
       
-      current = current + 1
-      if theaters[current] != nil
-        movies2 = theaters[current][:movies]
-        x = 0
-        until x == (movies2.count - 1)
-           movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:name]}")
-           movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:times]}")
-           x = x+1
-        end
-        movieTimesList = SiriAnswer.new("#{theaters[current][:name]}", movieTimesLines2)
-        moreTheaters2 = true
-      else
-        moreTheaters2 = false
-      end
-      
-      current = current + 1
-      if theaters[current] != nil
-        movies3 = theaters[current][:movies]
-        x = 0
-        until x == (movies3.count - 1)
-           movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:name]}")
-           movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:times]}")
-           x = x+1
-        end
-        movieTimesList = SiriAnswer.new("#{theaters[current][:name]}", movieTimesLines3)
-        moreTheaters3 = true
-      else
-        moreTheaters3 = false
-      end
+#      current = current + 1
+#      if theaters[current] != nil
+#        movies2 = theaters[current][:movies]
+#        x = 0
+#        until x == (movies2.count - 1)
+#           movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:name]}")
+#           movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:times]}")
+#           x = x+1
+#        end
+#        movieTimesList = SiriAnswer.new("#{theaters[current][:name]}", movieTimesLines2)
+#        moreTheaters2 = true
+#      else
+#        moreTheaters2 = false
+#      end
+#      
+#      current = current + 1
+#      if theaters[current] != nil
+#        movies3 = theaters[current][:movies]
+#        x = 0
+#        until x == (movies3.count - 1)
+#           movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:name]}")
+#           movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:times]}")
+#           x = x+1
+#        end
+#        movieTimesList = SiriAnswer.new("#{theaters[current][:name]}", movieTimesLines3)
+#        moreTheaters3 = true
+#      else
+#        moreTheaters3 = false
+#      end
     
-    if moreTheaters1 == false && moreTheaters2 == false && moreTheaters3 == false
+    if moreTheaters1 == false# && moreTheaters2 == false && moreTheaters3 == false
       return false
     else
       view.views << SiriAnswerSnippet.new(movieTimesList)
@@ -74,25 +74,26 @@ end
    listen_for /Movie times/i do
       if location.country == "United States"
         say "Getting movie times for #{location.city}, #{location.state}"
-        movieShowTimes = GoogleMovies47::Crawler.new({ :city => location.city, :state => location.state })
+        movieShowTimes = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
       else
         say "Getting movie times for #{location.city}, #{location.country}"
-        movieShowTimes = GoogleMovies47::Crawler.new({ :city => location.city, :state => location.country })
+        movieShowTimes = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
       end
-      theaters = movieShowTimes.theaters
-      more = true
-      x = 0
-      until more == false
-        shows = getEverything(theaters,x)
-        if shows != false
-          send_object shows
-          more = confirm "Would you like to see more theaters?"
-        else
-          say "I'm sorry but there are no more theaters near #{location.city}."
-          more = false
-        end
-        x = x + 3
-      end
+      puts movieShowTimes
+#      theaters = movieShowTimes.theaters
+#      more = true
+#      x = 0
+#      until more == false
+#        shows = getEverything(theaters,x)
+#        if shows != false
+#          send_object shows
+#          more = confirm "Would you like to see more theaters?"
+#        else
+#          say "I'm sorry but there are no more theaters near #{location.city}."
+#          more = false
+#        end
+#        x = x + 3
+#      end
       request_completed
    end
 end

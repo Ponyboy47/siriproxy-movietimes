@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "siriproxy-movietimes"
-  s.version     = "0.4.7" 
+  s.version     = "0.5.0b1" 
   s.authors     = ["Ponyboy47"]
   s.email       = ["ponyboy47@gmail.com"]
   s.homepage    = ""
@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   # s.add_runtime_dependency "rest-client"
    s.add_runtime_dependency "google_movies47"
    s.add_runtime_dependency "google_movies"
+   s.add_runtime_dependency "google_showtimes"
 end
