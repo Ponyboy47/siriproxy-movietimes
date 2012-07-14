@@ -13,10 +13,10 @@ end
    listen_for /Movie times/i do
       if location.country == "United States"
         say "Getting movie times for #{location.city}, #{location.state}"
-        movieShowTimes = GoogleMovies::Client.new("#{location.city}, #{location.state}")
+        movieShowTimes = GoogleMovies::Client("#{location.city}%2C+#{location.state}")
       else
         say "Getting movie times for #{location.city}, #{location.country}"
-        movieShowTimes = GoogleMovies::Client.new("#{location.city}, #{location.country}")
+        movieShowTimes = GoogleMovies::Client("#{location.city}%2C+{location.country}")
       end
       theaters = movieShowTimes.movie_theaters
 #      view1 = SiriAddViews.new
