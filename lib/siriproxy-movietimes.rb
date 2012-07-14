@@ -22,7 +22,7 @@ end
       view = SiriAddViews.new
       view.make_root(last_ref_id)
       view.scrollToTop = true
-      movieTimesLines1 = Array.new
+      movieTimesLines1 = []
 
       movies1 = @theaters[0].movies
       x = 0
@@ -34,9 +34,7 @@ end
         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times}")
         x = x+1
       end
-      movieTimesList1 = SiriAnswer.new("#{@theaters[0].name}", [
-        SiriAnswerLine.new("#{movies1[0].name}"),
-        SiriAnswerLine.new("#{movies1[0].times}")])
+      movieTimesList1 = SiriAnswer.new("#{@theaters[0].name}", movieTimesLines1)
       view.views << SiriAnswerSnippet.new([movieTimesList1])
       
       send_object view
