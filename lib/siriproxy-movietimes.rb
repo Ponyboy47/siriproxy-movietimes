@@ -17,6 +17,12 @@ end
     end
     return theaters
   end
+  def organizeFilmsByTheater(films)
+    theaters = [][]
+    films.each do |f|
+      theaters[f[:cinema][:name]] << f[:film][:name]
+    end
+  end
   
   listen_for /Movie time(?:s)?/i do
      if location.country == "United States"
@@ -26,8 +32,7 @@ end
        say "Getting movie times for #{location.city}, #{location.country}"
        movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
      end
-     theaters = organize(movies)
-     
+     theaters = getTheaters(movies)
      puts theaters
      
      request_completed
