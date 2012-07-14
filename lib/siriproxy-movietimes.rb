@@ -27,6 +27,9 @@ end
         x = x+1
       end
       movieTimesList << SiriAnswer.new("#{theaters[current].name}", movieTimesLines1)
+      moreTheaters1 = true
+    else
+      moreTheaters1 = false
     end
     
     current = current + 1
@@ -39,6 +42,9 @@ end
         x = x+1
       end
       movieTimesList << SiriAnswer.new("#{theaters[current].name}", movieTimesLines2)
+      moreTheaters2 = true
+    else
+      moreTheaters2 = false
     end
     
     current = current + 1
@@ -51,13 +57,17 @@ end
         x = x+1
       end
       movieTimesList << SiriAnswer.new("#{theaters[current].name}", movieTimesLines3)
-    end
-    if movieTimesList != nil
-      view.views << SiriAnswerSnippet.new(movieTimesList)
-      return view
+      moreTheaters3 = true
     else
+      moreTheaters3 = false
+    end
+    
+    if moreTheaters1 == false && moreTheaters2 == false && moreTheaters3 == false
       say "I'm sorry but there are no more theaters near #{location.city}."
       request_completed
+    else
+      view.views << SiriAnswerSnippet.new(movieTimesList)
+      return view
     end
   end
   
@@ -74,12 +84,12 @@ end
       
       send_object shows
       
-      more = confirm "Would you like to see more theaters?"
+      more = true
       x = 3
       until more == false
+        more = confirm "Would you like to see more theaters?"
         shows1 = getEverything(theaters,x)
         send_object shows1
-        more = confirm "Would you like to see more theaters?"
         x = x + 3
       end
       request_completed
