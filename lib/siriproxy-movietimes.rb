@@ -63,8 +63,7 @@ end
     end
     
     if moreTheaters1 == false && moreTheaters2 == false && moreTheaters3 == false
-      say "I'm sorry but there are no more theaters near #{location.city}."
-      request_completed
+      return false
     else
       view.views << SiriAnswerSnippet.new(movieTimesList)
       return view
@@ -82,9 +81,13 @@ end
       theaters = movieShowTimes.movies_theaters
       shows = getEverything(theaters,0)
       
-      send_object shows
+      if shows != false
+        more = true
+        send_object shows
+      else
+        say "I'm sorry but there are no more theaters near #{location.city}."
+      end
       
-      more = true
       x = 3
       until more == false
         more = confirm "Would you like to see more theaters?"
