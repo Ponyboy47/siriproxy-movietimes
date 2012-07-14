@@ -33,7 +33,6 @@ end
       until x == (movies1.length - 1)
          y = 0
          movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].name}")
-         puts "#{movies1[x].name}"
          until y == (movies1[x].times - 1)
             movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times[y]}")
             puts "#{movies1[x].times[y]}"
