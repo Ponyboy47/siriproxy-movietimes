@@ -9,7 +9,7 @@ end
    filter "SetRequestOrigin", direction: :from_iphone do |object|
      puts "[Info - User Location] lat: #{object["properties"]["latitude"]}, long: #{object["properties"]["longitude"]}"
    end
-  def getEverything(@theaters,@start)
+  def getEverything(@theaters,first)
     sleep 3
     view = SiriAddViews.new
     view.make_root(last_ref_id)
@@ -18,32 +18,32 @@ end
     movieTimesLines2 = []
     movieTimesLines3 = []
   
-    movies1 = @theaters[@start].movies
+    movies1 = @theaters[first].movies
     x = 0
     until x == (movies1.length - 1)
       movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].name}")
       movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times}")
       x = x+1
     end
-    movieTimesList1 = SiriAnswer.new("#{@theaters[@start].name}", movieTimesLines1)
+    movieTimesList1 = SiriAnswer.new("#{@theaters[first].name}", movieTimesLines1)
     
-    movies2 = @theaters[@start+1].movies
+    movies2 = @theaters[first+1].movies
     x = 0
     until x == (movies2.length - 1)
       movieTimesLines2 << SiriAnswerLine.new("#{movies2[x].name}")
       movieTimesLines2 << SiriAnswerLine.new("#{movies2[x].times}")
       x = x+1
     end
-    movieTimesList2 = SiriAnswer.new("#{@theaters[@start+1].name}", movieTimesLines2)
+    movieTimesList2 = SiriAnswer.new("#{@theaters[first+1].name}", movieTimesLines2)
     
-    movies3 = @theaters[@start+2].movies
+    movies3 = @theaters[first+2].movies
     x = 0
     until x == (movies3.length - 1)
       movieTimesLines3 << SiriAnswerLine.new("#{movies3[x].name}")
       movieTimesLines3 << SiriAnswerLine.new("#{movies3[x].times}")
       x = x+1
     end
-    movieTimesList3 = SiriAnswer.new("#{@theaters[@start+2].name}", movieTimesLines3)
+    movieTimesList3 = SiriAnswer.new("#{@theaters[first+2].name}", movieTimesLines3)
     view.views << SiriAnswerSnippet.new([movieTimesList1,movieTimesList2,movieTimesList3])
     
     return view
