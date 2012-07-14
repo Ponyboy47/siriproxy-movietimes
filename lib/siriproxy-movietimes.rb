@@ -13,7 +13,7 @@ end
   def getTheaters(film)
     theaters = Array.new
     film.each do |f|
-      theaters[f] << f[:cinema][:name]
+      theaters[f] = f[:cinema][:name]
     end
     return theaters
   end
