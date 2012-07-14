@@ -10,10 +10,9 @@ end
     puts "[Info - User Location] lat: #{object["properties"]["latitude"]}, long: #{object["properties"]["longitude"]}"
   end
   
-  def getTheaters(films)
-    theaters = Hash.new
-    films.each do |f|
-      theaters << f[:cinema][:name]
+  def getTheaters(film)
+    film.each do |f|
+      theaters[f] << f[:cinema][:name]
     end
     return theaters
   end
