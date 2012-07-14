@@ -71,7 +71,7 @@ end
     end
    end
    
-   listen_for /Movie times/i do
+   listen_for /Movie time(?:s)?/i do
       if location.country == "United States"
         say "Getting movie times for #{location.city}, #{location.state}"
         movieShowTimes = GoogleMovies47::Crawler.new({ :city => location.city, :state => location.state })
