@@ -13,7 +13,7 @@ end
   def getTheaters(film)
     theaters = Array.new
     film.each do |f|
-      theaters[f] = f[:cinema][:name]
+      theaters[f] << f[:cinema][:name]
     end
     return theaters
   end
@@ -32,8 +32,8 @@ end
        say "Getting movie times for #{location.city}, #{location.country}"
        movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
      end
-     theaters = getTheaters(movies)
-     puts theaters
+     #theaters = getTheaters(movies)
+     puts movies[:cinema]
      
      request_completed
   end
