@@ -18,13 +18,13 @@ end
         say "Getting movie times for #{location.city}, #{location.country}"
         movieShowTimes = GoogleMovies::Client.new("#{location.city}%2C+#{location.country}")
       end
-      theaters = movieShowTimes.movies_theaters
+      @theaters = movieShowTimes.movies_theaters
       view = SiriAddViews.new
       view.make_root(last_ref_id)
       view.scrollToTop = true
       movieTimesLines1 = Array.new
 
-      movies1 = theaters[0].movies
+      movies1 = @theaters[0].movies
       x = 0
       puts "#{movies1.length}"
       until x == (movies1.length - 1)
@@ -34,7 +34,9 @@ end
         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times}")
         x = x+1
       end
-      movieTimesList1 = SiriAnswer.new("#{theaters[0].name}", [movieTimesLines1])
+      movieTimesList1 = SiriAnswer.new("#{@theaters[0].name}", [
+        SiriAnswerLine.new("#{movies1[0].name}"),
+        SiriAnswerLine.new("#{movies1[0].times}")])
       view.views << SiriAnswerSnippet.new([movieTimesList1])
       
       send_object view
