@@ -13,7 +13,9 @@ end
     view = SiriAddViews.new
     view.make_root(last_ref_id)
     view.scrollToTop = true
-    movieTimesLines = []
+    movieTimesLines1 = []
+    movieTimesLines2 = []
+    movieTimesLines3 = []
     
     if theaters[current].movies != nil
       movies1 = theaters[current].movies
