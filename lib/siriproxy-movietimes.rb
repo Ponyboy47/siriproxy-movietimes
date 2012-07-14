@@ -33,7 +33,9 @@ end
        movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
      end
      #theaters = getTheaters(movies)
-     puts movies[:cinema]
+     puts movies[0]
+     puts movies[1]
+     puts movies[0][1]
      
      request_completed
   end
