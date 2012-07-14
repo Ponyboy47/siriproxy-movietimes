@@ -13,14 +13,14 @@ end
   def getTheaters(film)
     theaters = Array.new
     film.each do |f|
-      theaters[f] << f[:cinema][:name]
+      theaters << f[1][:cinema][:name]
     end
     return theaters
   end
   def organizeFilmsByTheater(films)
     theaters = [][]
     films.each do |f|
-      theaters[f[:cinema][:name]] << f[:film][:name]
+      theaters[f[1][:cinema][:name]] << f[1][:film][:name]
     end
   end
   
@@ -32,10 +32,7 @@ end
        say "Getting movie times for #{location.city}, #{location.country}"
        movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
      end
-     #theaters = getTheaters(movies)
-     puts "FIRST THING #{movies[0]}"
-     puts "SECOND THING #{movies[1]}"
-     puts "THIRD THING #{movies[0][1]}"
+     theaters = getTheaters(movies)
      
      request_completed
   end
