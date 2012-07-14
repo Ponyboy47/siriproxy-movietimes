@@ -17,21 +17,51 @@ end
       movieTimesLines1 = []
       movieTimesList = []
       
-    if theaters[current] != nil
-      movies1 = theaters[current][:movies]
-      x = 0
-      until x == (movies1.count - 1)
-         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:name]}")
-         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:times]}")
-         x = x+1
+      if theaters[current] != nil
+        movies1 = theaters[current][:movies]
+        x = 0
+        until x == (movies1.count - 1)
+           movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:name]}")
+           movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:times]}")
+           x = x+1
+        end
+        movieTimesList = SiriAnswer.new("#{theaters[current][:name]}", movieTimesLines1)
+        moreTheaters1 = true
+      else
+        moreTheaters1 = false
       end
-      movieTimesList = SiriAnswer.new("#{theaters[current][:name]}", movieTimesLines1)
-      moreTheaters1 = true
-    else
-      moreTheaters1 = false
-    end
+      
+      current = current + 1
+      if theaters[current] != nil
+        movies2 = theaters[current][:movies]
+        x = 0
+        until x == (movies2.count - 1)
+           movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:name]}")
+           movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:times]}")
+           x = x+1
+        end
+        movieTimesList = SiriAnswer.new("#{theaters[current][:name]}", movieTimesLines2)
+        moreTheaters2 = true
+      else
+        moreTheaters2 = false
+      end
+      
+      current = current + 1
+      if theaters[current] != nil
+        movies3 = theaters[current][:movies]
+        x = 0
+        until x == (movies3.count - 1)
+           movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:name]}")
+           movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:times]}")
+           x = x+1
+        end
+        movieTimesList = SiriAnswer.new("#{theaters[current][:name]}", movieTimesLines3)
+        moreTheaters3 = true
+      else
+        moreTheaters3 = false
+      end
     
-    if moreTheaters1 == false
+    if moreTheaters1 == false && moreTheaters2 == false && moreTheaters3 == false
       return false
     else
       view.views << SiriAnswerSnippet.new(movieTimesList)
