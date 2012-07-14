@@ -11,6 +11,7 @@ end
   end
   
   def getTheaters(film)
+    theaters = Array.new
     film.each do |f|
       theaters[f] << f[:cinema][:name]
     end
