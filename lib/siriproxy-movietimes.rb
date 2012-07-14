@@ -26,11 +26,9 @@ end
       movieTimesLines2 = Array.new
       movieTimesLines3 = Array.new
 
-      puts "#{theaters[0]}"
       movies1 = theaters[0].movies
       x = 0
       until x == (movies1.length - 1)
-         y = 0
          movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].name}")
          movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times}")
          x = x+1
