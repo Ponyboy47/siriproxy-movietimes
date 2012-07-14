@@ -25,12 +25,13 @@ end
       view1.make_root(last_ref_id)
 #      view2.make_root(last_ref_id)
 #      view3.make_root(last_ref_id)
-      view1.scrollToTop = true
+#      view1.scrollToTop = true
 #      view2.scrollToTop = false
 #      view3.scrollToTop = false
       movieTimesLines1 = Array.new
 #      movieTimesLines2 = Array.new
 #      movieTimesLines3 = Array.new
+      say "#{theaters[0][:movies]}"
       movies1 = theaters[0][:movies]
       x = 0
       until x == (movies1.count - 1)
