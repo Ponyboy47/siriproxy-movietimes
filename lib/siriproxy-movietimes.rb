@@ -23,13 +23,13 @@ end
       view.make_root(last_ref_id)
       view.scrollToTop = true
       movieTimesLines1 = []
+      movieTimesLines2 = []
+      movieTimesLines3 = []
 
       movies1 = @theaters[0].movies
       x = 0
       puts "#{movies1.length}"
       until x == (movies1.length - 1)
-        puts "#{movies1[x].name}"
-        puts "#{movies1[x].times}"
         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].name}")
         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times}")
         x = x+1
@@ -40,8 +40,6 @@ end
       x = 0
       puts "#{movies2.length}"
       until x == (movies2.length - 1)
-        puts "#{movies2[x].name}"
-        puts "#{movies2[x].times}"
         movieTimesLines2 << SiriAnswerLine.new("#{movies2[x].name}")
         movieTimesLines2 << SiriAnswerLine.new("#{movies2[x].times}")
         x = x+1
@@ -52,8 +50,6 @@ end
       x = 0
       puts "#{movies3.length}"
       until x == (movies3.length - 1)
-        puts "#{movies3[x].name}"
-        puts "#{movies3[x].times}"
         movieTimesLines3 << SiriAnswerLine.new("#{movies3[x].name}")
         movieTimesLines3 << SiriAnswerLine.new("#{movies3[x].times}")
         x = x+1
