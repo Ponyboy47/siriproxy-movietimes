@@ -85,11 +85,11 @@ end
       until more == false
         shows = getEverything(theaters,x)
         if shows != false
-          more = true
           send_object shows
           more = confirm "Would you like to see more theaters?"
         else
           say "I'm sorry but there are no more theaters near #{location.city}."
+          more = false
         end
         x = x + 3
       end
