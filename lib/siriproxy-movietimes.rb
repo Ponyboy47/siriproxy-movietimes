@@ -32,8 +32,9 @@ end
        say "Getting movie times for #{location.city}, #{location.country}"
        movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
      end
-     theaters = getTheaters(movies)
-     
+     #theaters = getTheaters(movies)
+     puts "FIRST THING #{movies[1][:cinema][:name]}"
+     puts "SECOND THING #{movies[2]}"
      request_completed
   end
 end
