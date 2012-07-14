@@ -32,7 +32,7 @@ end
       until x == (movies1.length - 1)
          y = 0
          movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].name}")
-         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].timess}")
+         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times}")
          x = x+1
       end
       movieTimesList1 = SiriAnswer.new("#{theaters[0].name}", [movieTimesLines1])
