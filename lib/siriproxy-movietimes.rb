@@ -79,20 +79,18 @@ end
         movieShowTimes = GoogleMovies::Client.new("#{location.city}%2C+#{location.country}")
       end
       theaters = movieShowTimes.movies_theaters
-      shows = getEverything(theaters,0)
       
-      if shows != false
-        more = true
-        send_object shows
-      else
-        say "I'm sorry but there are no more theaters near #{location.city}."
-      end
-      
-      x = 3
+      more = true
+      x = 0
       until more == false
-        more = confirm "Would you like to see more theaters?"
-        shows1 = getEverything(theaters,x)
-        send_object shows1
+        shows = getEverything(theaters,x)
+        if shows != false
+          more = true
+          send_object shows
+          more = confirm "Would you like to see more theaters?"
+        else
+          say "I'm sorry but there are no more theaters near #{location.city}."
+        end
         x = x + 3
       end
       request_completed
