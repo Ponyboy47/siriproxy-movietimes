@@ -18,7 +18,7 @@ end
     movieTimesLines3 = []
     movieTimesList = []
     
-    if theaters[current].movies != nil
+    if theaters[current] != nil
       movies1 = theaters[current].movies
       x = 0
       until x == (movies1.length - 1)
@@ -30,7 +30,7 @@ end
     end
     
     current = current + 1
-    if theaters[current].movies != nil
+    if theaters[current] != nil
       movies2 = theaters[current].movies
       x = 0
       until x == (movies2.length - 1)
@@ -42,7 +42,7 @@ end
     end
     
     current = current + 1
-    if theaters[current].movies != nil
+    if theaters[current] != nil
      movies3 = theaters[current].movies
       x = 0
       until x == (movies3.length - 1)
