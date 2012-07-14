@@ -28,12 +28,10 @@ end
       view1.scrollToTop = true
       view2.scrollToTop = false
       view3.scrollToTop = false
-#      movieTimesLines1 = Array.new
-#      movieTimesLines2 = Array.new
-#      movieTimesLines3 = Array.new
-      puts "#{theaters[0]}"
-      puts "#{theaters[0].name}"
-      puts "#{theaters[0].movies[0].name}"
+      movieTimesLines1 = Array.new
+      movieTimesLines2 = Array.new
+      movieTimesLines3 = Array.new
+
       movies1 = theaters[0].movies
       x = 0
       until x == (movies1.count - 1)
