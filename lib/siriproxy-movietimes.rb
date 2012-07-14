@@ -1,6 +1,6 @@
 require 'cora'
 require 'siri_objects'
-require 'google_movies47'
+require 'google_movies'
 
 class SiriProxy::Plugin::MovieTimes < SiriProxy::Plugin
 def initialize(config)
@@ -13,42 +13,41 @@ end
    listen_for /Movie times/i do
       if location.country == "United States"
         say "Getting movie times for #{location.city}, #{location.state}"
-        movieShowTimes = GoogleMovies47::Crawler.new({ :city => location.city, :state => location.state })
+        movieShowTimes = GoogleMovies::Client.new("#{location.city}, #{location.state}")
       else
         say "Getting movie times for #{location.city}, #{location.country}"
-        movieShowTimes = GoogleMovies47::Crawler.new({ :city => location.city, :state => location.country })
+        movieShowTimes = GoogleMovies::Client.new("#{location.city}, #{location.country}")
       end
-      theaters = movieShowTimes.theaters
-      view1 = SiriAddViews.new
+      theaters = movieShowTimes.movie_theaters
+#      view1 = SiriAddViews.new
 #      view2 = SiriAddViews.new
 #      view3 = SiriAddViews.new
-      view1.make_root(last_ref_id)
+#      view1.make_root(last_ref_id)
 #      view2.make_root(last_ref_id)
 #      view3.make_root(last_ref_id)
 #      view1.scrollToTop = true
 #      view2.scrollToTop = false
 #      view3.scrollToTop = false
-      movieTimesLines1 = Array.new
+#      movieTimesLines1 = Array.new
 #      movieTimesLines2 = Array.new
 #      movieTimesLines3 = Array.new
       say "#{theaters}"
-      say "#{theaters[0][:movies]}"
-      movies1 = theaters[0][:movies]
-      x = 0
-      until x == (movies1.count - 1)
-         y = 0
-         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:name]}")
-         puts "#{movies1[x][:name]}"
-         until y == (movies1[x][:times].count - 1)
-            movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:times][y]}")
-            puts "#{movies1[x][:times][y]}"
-            y = y + 1
-         end
-         x = x+1
-      end
-      movieTimesList1 = SiriAnswer.new("#{theaters[0][:name]}", [movieTimesLines1])
-      view1.views << SiriAnswerSnippet.new([movieTimesList1])
-      
+#      movies1 = theaters[0][:movies]
+#      x = 0
+#      until x == (movies1.count - 1)
+#         y = 0
+#         movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:name]}")
+#         puts "#{movies1[x][:name]}"
+#         until y == (movies1[x][:times].count - 1)
+#            movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:times][y]}")
+#            puts "#{movies1[x][:times][y]}"
+#            y = y + 1
+#         end
+#         x = x+1
+#      end
+#      movieTimesList1 = SiriAnswer.new("#{theaters[0][:name]}", [movieTimesLines1])
+#      view1.views << SiriAnswerSnippet.new([movieTimesList1])
+#      
 #      movies2 = theaters[1][:movies]
 #      x = 0
 #      until x == (movies2.count - 1)
@@ -76,8 +75,8 @@ end
 #      end
 #      movieTimesList3 = SiriAnswer.new("#{theaters[2][:name]}", [movieTimesLines3])
 #      view3.views << SiriAnswerSnippet.new([movieTimesList3])
-      
-      send_object view1
+#      
+#      send_object view1
 #      send_object view2
 #      send_object view3
       
