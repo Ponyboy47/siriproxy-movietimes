@@ -15,6 +15,8 @@ end
       view.make_root(last_ref_id)
       view.scrollToTop = true
       movieTimesLines1 = []
+      movieTimesLines2 = []
+      movieTimesLines3 = []
       movieTimesList = []
       
       if theaters[current] != nil
