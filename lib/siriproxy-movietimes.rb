@@ -11,7 +11,7 @@ end
   end
   
   def getTheaters(films)
-    theaters = []
+    theaters = Hash.new
     films.each do |f|
       theaters << f[:cinema][:name]
     end
