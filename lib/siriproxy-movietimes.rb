@@ -19,26 +19,22 @@ end
         movieShowTimes = GoogleMovies::Client.new("#{location.city}%2C+#{location.country}")
       end
       theaters = movieShowTimes.movies_theaters
-      view1 = SiriAddViews.new
-      view2 = SiriAddViews.new
-      view3 = SiriAddViews.new
-      view1.make_root(last_ref_id)
-      view2.make_root(last_ref_id)
-      view3.make_root(last_ref_id)
-      view1.scrollToTop = true
-      view2.scrollToTop = false
-      view3.scrollToTop = false
+      view = SiriAddViews.new
+      view.make_root(last_ref_id)
+      view.scrollToTop = true
       movieTimesLines1 = Array.new
       movieTimesLines2 = Array.new
       movieTimesLines3 = Array.new
 
+      puts "#{theaters[0].movies}"
+      puts "#{theaters[0].movies[0].times}"
       movies1 = theaters[0].movies
       x = 0
       until x == (movies1.length - 1)
          y = 0
          movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].name}")
          puts "#{movies1[x].name}"
-         until y == (movies1[x].times.length - 1)
+         until y == (movies1[x].times - 1)
             movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times[y]}")
             puts "#{movies1[x].times[y]}"
             y = y + 1
@@ -46,7 +42,7 @@ end
          x = x+1
       end
       movieTimesList1 = SiriAnswer.new("#{theaters[0].name}", [movieTimesLines1])
-      view1.views << SiriAnswerSnippet.new([movieTimesList1])
+      view.views << SiriAnswerSnippet.new([movieTimesList1])
 
       movies2 = theaters[1].movies
       x = 0
@@ -62,7 +58,7 @@ end
          x = x+1
       end
       movieTimesList2 = SiriAnswer.new("#{theaters[1].name}", [movieTimesLines2])
-      view2.views << SiriAnswerSnippet.new([movieTimesList2])
+      view.views << SiriAnswerSnippet.new([movieTimesList2])
       
       movies3 = theaters[2].movies
       x = 0
@@ -78,11 +74,9 @@ end
          x = x+1
       end
       movieTimesList3 = SiriAnswer.new("#{theaters[2].name}", [movieTimesLines3])
-      view3.views << SiriAnswerSnippet.new([movieTimesList3])
+      view.views << SiriAnswerSnippet.new([movieTimesList3])
       
-      send_object view1
-      send_object view2
-      send_object view3
+      send_object view
       
       request_completed
    end
