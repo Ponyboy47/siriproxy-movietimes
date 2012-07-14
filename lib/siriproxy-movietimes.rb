@@ -34,11 +34,11 @@ end
 
       movies1 = theaters[0].movies
       x = 0
-      until x == (movies1.count - 1)
+      until x == (movies1.length - 1)
          y = 0
          movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].name}")
          puts "#{movies1[x].name}"
-         until y == (movies1[x].times.count - 1)
+         until y == (movies1[x].times.length - 1)
             movieTimesLines1 << SiriAnswerLine.new("#{movies1[x].times[y]}")
             puts "#{movies1[x].times[y]}"
             y = y + 1
