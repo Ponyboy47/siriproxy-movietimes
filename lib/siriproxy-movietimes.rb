@@ -115,13 +115,10 @@ end
     if location.country == "United States"
       say "Getting movie times for #{location.city}, #{location.state}"
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
-      client = GoogleMovies::Client.new("#{location.city}%2C+#{location.state}")
     else
       say "Getting movie times for #{location.city}, #{location.country}"
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
-      client = GoogleMovies::Client.new("#{location.city}%2C+#{location.country}")
     end
-    puts client.movies_theaters
     theaters = organizeFilmsByTheater(movies)
     more = true
     x = 0
