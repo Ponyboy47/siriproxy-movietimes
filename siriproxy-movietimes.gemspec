@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "siriproxy-movietimes"
-  s.version     = "0.7.0" 
+  s.version     = "0.7.1b1" 
   s.authors     = ["Ponyboy47"]
   s.email       = ["ponyboy47@gmail.com"]
   s.homepage    = ""
