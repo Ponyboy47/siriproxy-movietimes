@@ -157,35 +157,35 @@ end
       x = getNum(x) if x.is_a?(Integer) == false
       x = x - 1
       shows = doEverythingWithoutWolfram(theaters,x)
-#      if shows != false
-#        while y < shows.length do
-#          say "#{y+1}: #{shows[y][:title]}", spoken: ""
-#          say "   #{shows[y][:showtimes]}", spoken: ""
-#          y = y + 1
-#        end
-#        more = confirm "Would you like to see showtimes for other theaters?"
-#      else
-#        say "I'm sorry but I don't know which theater you wanted."
-#      end
       if shows != false
-        view = SiriAddViews.new
-        view.make_root(last_ref_id)
-        view.scrollToTop = true
-        movieTimesLines = []
-        movieTimesList = []
-
         while y < shows.length do
-          movieTimesLines << SiriAnswerLine.new("#{y+1}: #{shows[x][:title]}")
-          movieTimesLines << SiriAnswerLine.new("#{shows[x][:showtimes]}")
+          say "#{y+1}: #{shows[y][:title]}", spoken: ""
+          say "   #{shows[y][:showtimes]}", spoken: ""
           y = y + 1
         end
-        movieTimesList = SiriAnswer.new("#{theaters[x][:info][:name]}", movieTimesLines)
-        view.views << SiriAnswerSnippet.new(movieTimesList)
-        send_object view
         more = confirm "Would you like to see showtimes for other theaters?"
       else
         say "I'm sorry but I don't know which theater you wanted."
       end
+#      if shows != false
+#        view = SiriAddViews.new
+#        view.make_root(last_ref_id)
+#        view.scrollToTop = true
+#        movieTimesLines = []
+#        movieTimesList = []
+#
+#        while y < shows.length do
+#          movieTimesLines << SiriAnswerLine.new("#{y+1}: #{shows[x][:title]}")
+#          movieTimesLines << SiriAnswerLine.new("#{shows[x][:showtimes]}")
+#          y = y + 1
+#        end
+#        movieTimesList = SiriAnswer.new("#{theaters[x][:info][:name]}", movieTimesLines)
+#        view.views << SiriAnswerSnippet.new(movieTimesList)
+#        send_object view
+#        more = confirm "Would you like to see showtimes for other theaters?"
+#      else
+#        say "I'm sorry but I don't know which theater you wanted."
+#      end
     end
     request_completed
   end
