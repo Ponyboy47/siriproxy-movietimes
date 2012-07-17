@@ -181,7 +181,7 @@ end
         end
         movieTimesList = SiriAnswer.new("#{theaters[x][:info][:name]}", movieTimesLines)
         view.views << SiriAnswerSnippet.new(movieTimesList)
-        end
+        send_object view
         more = confirm "Would you like to see showtimes for other theaters?"
       else
         say "I'm sorry but I don't know which theater you wanted."
