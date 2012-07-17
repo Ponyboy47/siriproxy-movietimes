@@ -4,6 +4,7 @@ require 'google_showtimes'
 
 class SiriProxy::Plugin::MovieTimes < SiriProxy::Plugin
 def initialize(config)
+  @numbers = ["One","First","Two","Second","Three","Third","Four","Fourth","Five","Fifth","Six","Sixth","Seven","Seventh","Eight","Eighth","Nine","Ninth","Ten","Tenth"] #Hopefully no more than 10 theaters
 end
 
   filter "SetRequestOrigin", direction: :from_iphone do |object|
@@ -111,15 +112,85 @@ end
     end
   end
   
-  listen_for /Movie time(?:s)?/i do
-    if location.country == "United States"
-      say "Getting movie times for #{location.city}, #{location.state}"
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
+  def doEverythingWithoutWolfram(theaters,current)
+    movieTimesLines = []
+
+    if theaters[current] != nil
+      movies = theaters[current][:movies]
+      x = 0
+      until x == (movies.count - 1)
+        movieTimesLines << movies[x][:name]
+        movieTimesLines << movies[x][:times]
+        x = x + 1
+      end
+      theater = true
     else
-      say "Getting movie times for #{location.city}, #{location.country}"
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
+      theater = false
     end
+
+    if theater == false
+      return false
+    else
+      return movieTimesLines
+    end
+  end
+  
+  def getNum(num)
+    if num =~ /#{@numbers[0]}/i or /#{numbers[1]}/i
+      number = 1
+    elsif num =~ /#{@numbers[2]}/i or /#{numbers[3]}/i
+      number = 2
+    elsif num =~ /#{@numbers[4]}/i or /#{numbers[5]}/i
+      number = 3
+    elsif num =~ /#{@numbers[6]}/i or /#{numbers[7]}/i
+      number = 4
+    elsif num =~ /#{@numbers[8]}/i or /#{numbers[9]}/i
+      number = 5
+    elsif num =~ /#{@numbers[10]}/i or /#{numbers[11]}/i
+      number = 6
+    elsif num =~ /#{@numbers[12]}/i or /#{numbers[13]}/i
+      number = 7
+    elsif num =~ /#{@numbers[14]}/i or /#{numbers[15]}/i
+      number = 8
+    elsif num =~ /#{@numbers[16]}/i or /#{numbers[17]}/i
+      number = 9
+    elsif num =~ /#{@numbers[18]}/i or /#{numbers[19]}/i
+      number = 10
+    end
+    return number
+  end
+  
+  listen_for /Movie time(?:s)?/i do
+#    if location.country == "United States"
+#      say "Getting movie times for #{location.city}, #{location.state}"
+#      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
+#    else
+#      say "Getting movie times for #{location.city}, #{location.country}"
+#      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
+#    end
+    movies = GoogleShowtimes.for("Spring%2C+Texas")
     theaters = organizeFilmsByTheater(movies)
+    done = false
+    y = 0
+    z = 1
+    say "Here are the closest theaters to you:"
+    until done == true
+      while z < 10 do
+        say "#{z}) #{theater[z-1]}", spoken: ""
+      end
+      x = ask "Which numbered theater would you like see showtimes for?"
+      x = getNum(x)
+      shows = doEverythingWithoutWolfram(theaters,x)
+      if shows != false
+        while y < shows.length do
+          say "#{y}: #{shows[y]}"
+        end
+        done = confirm "Would you like to see showtimes for other theaters?"
+      else
+        say "I'm sorry but I don't know which theater you wanted."
+        x = ask "Which theater did you want again?"
+      end
+    end
     more = true
     x = 0
     until more == false
