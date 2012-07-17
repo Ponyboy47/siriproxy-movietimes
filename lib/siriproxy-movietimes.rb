@@ -4,7 +4,6 @@ require 'google_showtimes'
 
 class SiriProxy::Plugin::MovieTimes < SiriProxy::Plugin
 def initialize(config)
-  @numbers = ["One","First","Two","Second","Three","Third","Four","Fourth","Five","Fifth","Six","Sixth","Seven","Seventh","Eight","Eighth","Nine","Ninth","Ten","Tenth"] #Hopefully no more than 10 theaters
 end
 
   filter "SetRequestOrigin", direction: :from_iphone do |object|
@@ -13,32 +12,34 @@ end
 
   def organizeFilmsByTheater(film)
     theaters = Hash.new
-    movies = Hash.new
     theaternames = []
     theaterinfo = []
     w = 0
     x = 0
-    y = 0
-    z = 0
-
-      while w < film[1].length do
+    
+    while w < film[1].length do
       if theaterinfo.include?(film[1][w][:cinema][:name]) == false
         theaterinfo = []
         theaterinfo << film[1][w][:cinema][:name]
         theaterinfo << film[1][w][:cinema][:address]
         theaterinfo << film[1][w][:cinema][:phone]
         theaternames << theaterinfo
-      end
+       end
       w = w + 1
     end
     while x < theaternames.length do
+      y = 0
+      movies = Hash.new
       while y < film[1].length do
-        showtimes = []
-        while z < film[1][y][:showtimes].length do
-          showtimes << film[1][y][:showtimes][z][:time]
-          z = z + 1
+        if film[1][y][:cinema][:name] == theaternames[x][0]
+          showtimes = []
+          z = 0
+          while z < film[1][y][:showtimes].length do
+            showtimes << film[1][y][:showtimes][z][:time].strftime("%H:%M")
+            z = z + 1
+          end
+          movies[movies.count] = { :name => film[1][y][:film][:name], :times => showtimes }
         end
-        movies[movies.count] = { :name => film[1][y][:film][:name], :times => showtimes } if showtimes.length > 0
         y = y + 1
       end
       theaters[x] = { :info => { :name => theaternames[x][0], :address => theaternames[x][1], :phone => theaternames[x][2] }, :movies => movies }
@@ -52,11 +53,7 @@ end
     view.make_root(last_ref_id)
     view.scrollToTop = true
     movieTimesLines1 = []
-    movieTimesLines2 = []
-    movieTimesLines3 = []
     movieTimesList1 = []
-    movieTimesList2 = []
-    movieTimesList3 = []
 
     if theaters[current] != nil
       movies1 = theaters[current][:movies]
@@ -72,55 +69,22 @@ end
       moreTheaters1 = false
     end
 
-    current = current + 1
-    if theaters[current] != nil
-      movies2 = theaters[current][:movies]
-      x = 0
-      until x == (movies2.count - 1)
-        movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:name]}")
-        movieTimesLines2 << SiriAnswerLine.new("#{movies2[x][:times]}")
-        x = x + 1
-      end
-      movieTimesList2 = SiriAnswer.new("#{theaters[current][:info][:name]}", movieTimesLines2)
-      moreTheaters2 = true
-    else
-      moreTheaters2 = false
-    end
-
-    current = current + 1
-    if theaters[current] != nil
-      movies3 = theaters[current][:movies]
-      x = 0
-      until x == (movies3.count - 1)
-        movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:name]}")
-        movieTimesLines3 << SiriAnswerLine.new("#{movies3[x][:times]}")
-        x = x + 1
-      end
-      movieTimesList3 = SiriAnswer.new("#{theaters[current][:info][:name]}", movieTimesLines3)
-      moreTheaters3 = true
-    else
-      moreTheaters3 = false
-    end
-
-    if moreTheaters1 == false && moreTheaters2 == false && moreTheaters3 == false
+    if moreTheaters1 == false
       return false
     else
       view.views << SiriAnswerSnippet.new(movieTimesList1)
-      view.views << SiriAnswerSnippet.new(movieTimesList2)
-      view.views << SiriAnswerSnippet.new(movieTimesList3)
       return view
     end
   end
   
   def doEverythingWithoutWolfram(theaters,current)
-    movieTimesLines = []
+    movieTimesLines = Hash.new
 
     if theaters[current] != nil
       movies = theaters[current][:movies]
       x = 0
-      until x == (movies.count - 1)
-        movieTimesLines << movies[x][:name]
-        movieTimesLines << movies[x][:times]
+      while x < movies.length do
+        movieTimesLines[x] = { :title => movies[x][:name], :showtimes => movies[x][:times] }
         x = x + 1
       end
       theater = true
@@ -134,28 +98,38 @@ end
       return movieTimesLines
     end
   end
-  
+ 
   def getNum(num)
-    if num =~ /#{@numbers[0]}/i or /#{numbers[1]}/i
+    if num =~ /One/i or num =~ /First/i
       number = 1
-    elsif num =~ /#{@numbers[2]}/i or /#{numbers[3]}/i
+    elsif num =~ /Two/i or num =~ /Second/i
       number = 2
-    elsif num =~ /#{@numbers[4]}/i or /#{numbers[5]}/i
+    elsif num =~ /Three/i or num =~ /Third/i
       number = 3
-    elsif num =~ /#{@numbers[6]}/i or /#{numbers[7]}/i
+    elsif num =~ /Four/i or num =~ /Fourth/i
       number = 4
-    elsif num =~ /#{@numbers[8]}/i or /#{numbers[9]}/i
+    elsif num =~ /Five/i or num =~ /Fifth/i
       number = 5
-    elsif num =~ /#{@numbers[10]}/i or /#{numbers[11]}/i
+    elsif num =~ /Six/i or num =~ /Sixth/i
       number = 6
-    elsif num =~ /#{@numbers[12]}/i or /#{numbers[13]}/i
+    elsif num =~ /Seven/i or num =~ /Seventh/i
       number = 7
-    elsif num =~ /#{@numbers[14]}/i or /#{numbers[15]}/i
+    elsif num =~ /Eight/i or num =~ /Eighth/i
       number = 8
-    elsif num =~ /#{@numbers[16]}/i or /#{numbers[17]}/i
+    elsif num =~ /Nine/i or num =~ /Ninth/i
       number = 9
-    elsif num =~ /#{@numbers[18]}/i or /#{numbers[19]}/i
+    elsif num =~ /Ten/i or num =~ /Tenth/i
       number = 10
+    elsif num =~ /Eleven/i or num =~ /Eleventh/i
+      number = 11
+    elsif num =~ /Twelve/i or num =~ /Twelfth/i
+      number = 12
+    elsif num =~ /Thirteen/i or num =~ /Thirteenth/i
+      number = 13
+    elsif num =~ /Fourteen/i or num =~ /Fourteenth/i
+      number = 14
+    elsif num =~ /Fifteen/i or num =~ /Fifteenth/i
+      number = 15
     end
     return number
   end
@@ -170,39 +144,30 @@ end
 #    end
     movies = GoogleShowtimes.for("Spring%2C+Texas")
     theaters = organizeFilmsByTheater(movies)
-    done = false
-    y = 0
-    z = 1
-    say "Here are the closest theaters to you:"
-    until done == true
-      while z < 10 do
-        say "#{z}) #{theater[z-1]}", spoken: ""
+    
+    more = true
+    until more == false
+      y = 0
+      z = 1
+      say "Here are the closest theaters to you:"
+      while z <= theaters.length do
+        say "#{z}) #{theaters[z-1][:info][:name]}", spoken: ""
+        z = z + 1
       end
       x = ask "Which numbered theater would you like see showtimes for?"
       x = getNum(x)
+      x = x - 1
       shows = doEverythingWithoutWolfram(theaters,x)
       if shows != false
         while y < shows.length do
-          say "#{y}: #{shows[y]}"
+          say "#{y+1}: #{shows[y][:title]}", spoken: ""
+          say "   #{shows[y][:showtimes]}", spoken: ""
+          y = y + 1
         end
-        done = confirm "Would you like to see showtimes for other theaters?"
+        more = confirm "Would you like to see showtimes for other theaters?"
       else
         say "I'm sorry but I don't know which theater you wanted."
-        x = ask "Which theater did you want again?"
       end
-    end
-    more = true
-    x = 0
-    until more == false
-      shows = doEverythingElse(theaters,x)
-      if shows != false
-        send_object shows
-        more = confirm "Would you like to see more theaters?"
-      else
-        say "I'm sorry but there are no more theaters near #{location.city}."
-        more = false
-      end
-      x = x + 3
     end
     request_completed
   end
