@@ -154,7 +154,7 @@ end
         z = z + 1
       end
       x = ask "Which numbered theater would you like to see the showtimes for?"
-      #x = getNum(x) if x.is_a?(Integer) == false
+      x = getNum(x) if x.is_a?(Integer) == false
       x = x - 1
       shows = doEverythingWithoutWolfram(theaters,x)
       if shows != false
