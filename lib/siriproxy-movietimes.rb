@@ -136,19 +136,19 @@ end
   
   listen_for /Movie time(?:s)?/i do
     if location.country == "United States"
-      say "Getting movie times for #{location.city}, #{location.state}"
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
+      theaters = organizeFilmsByTheater(movies)
+      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
     else
-      say "Getting movie times for #{location.city}, #{location.country}"
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
+      theaters = organizeFilmsByTheater(movies)
+      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
     end
-    theaters = organizeFilmsByTheater(movies)
     
     more = true
     until more == false
       y = 0
       z = 1
-      say "Here are the #{theaters.length} closest theaters to you:"
       while z <= theaters.length do
         say "#{z}) #{theaters[z-1][:info][:name]}", spoken: ""
         z = z + 1
@@ -157,11 +157,30 @@ end
       x = getNum(x) if x.is_a?(Integer) == false
       x = x - 1
       shows = doEverythingWithoutWolfram(theaters,x)
+#      if shows != false
+#        while y < shows.length do
+#          say "#{y+1}: #{shows[y][:title]}", spoken: ""
+#          say "   #{shows[y][:showtimes]}", spoken: ""
+#          y = y + 1
+#        end
+#        more = confirm "Would you like to see showtimes for other theaters?"
+#      else
+#        say "I'm sorry but I don't know which theater you wanted."
+#      end
       if shows != false
+        view = SiriAddViews.new
+        view.make_root(last_ref_id)
+        view.scrollToTop = true
+        movieTimesLines = []
+        movieTimesList = []
+
         while y < shows.length do
-          say "#{y+1}: #{shows[y][:title]}", spoken: ""
-          say "   #{shows[y][:showtimes]}", spoken: ""
+          movieTimesLines << SiriAnswerLine.new("#{y+1}: #{shows[x][:title]}")
+          movieTimesLines << SiriAnswerLine.new("#{shows[x][:showtimes]}")
           y = y + 1
+        end
+        movieTimesList = SiriAnswer.new("#{theaters[x][:info][:name]}", movieTimesLines)
+        view.views << SiriAnswerSnippet.new(movieTimesList)
         end
         more = confirm "Would you like to see showtimes for other theaters?"
       else
