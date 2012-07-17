@@ -149,13 +149,13 @@ end
     until more == false
       y = 0
       z = 1
-      say "Here are the closest theaters to you:"
+      say "Here are the closest theaters #{theaters.length} to you:"
       while z <= theaters.length do
         say "#{z}) #{theaters[z-1][:info][:name]}", spoken: ""
         z = z + 1
       end
-      x = ask "Which numbered theater would you like see showtimes for?"
-      x = getNum(x) if x.is_a?(Integer) == false
+      x = ask "Which numbered theater would you like to see the showtimes for?"
+      #x = getNum(x) if x.is_a?(Integer) == false
       x = x - 1
       shows = doEverythingWithoutWolfram(theaters,x)
       if shows != false
