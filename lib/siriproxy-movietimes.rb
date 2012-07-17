@@ -100,56 +100,55 @@ end
   end
  
   def getNum(num)
-    if num =~ /One/i or num =~ /First/i
+    if num =~ /One/i or num =~ /First/i or num =~ /1/i
       number = 1
-    elsif num =~ /Two/i or num =~ /Second/i
+    elsif num =~ /Two/i or num =~ /Second/i or num =~ /2/i
       number = 2
-    elsif num =~ /Three/i or num =~ /Third/i
+    elsif num =~ /Three/i or num =~ /Third/i or num =~ /3/i
       number = 3
-    elsif num =~ /Four/i or num =~ /Fourth/i
+    elsif num =~ /Four/i or num =~ /Fourth/i or num =~ /4/i
       number = 4
-    elsif num =~ /Five/i or num =~ /Fifth/i
+    elsif num =~ /Five/i or num =~ /Fifth/i or num =~ /5/i
       number = 5
-    elsif num =~ /Six/i or num =~ /Sixth/i
+    elsif num =~ /Six/i or num =~ /Sixth/i or num =~ /6/i
       number = 6
-    elsif num =~ /Seven/i or num =~ /Seventh/i
+    elsif num =~ /Seven/i or num =~ /Seventh/i or num =~ /7/i
       number = 7
-    elsif num =~ /Eight/i or num =~ /Eighth/i
+    elsif num =~ /Eight/i or num =~ /Eighth/i or num =~ /8/i
       number = 8
-    elsif num =~ /Nine/i or num =~ /Ninth/i
+    elsif num =~ /Nine/i or num =~ /Ninth/i or num =~ /9/i
       number = 9
-    elsif num =~ /Ten/i or num =~ /Tenth/i
+    elsif num =~ /Ten/i or num =~ /Tenth/i or num =~ /10/i
       number = 10
-    elsif num =~ /Eleven/i or num =~ /Eleventh/i
+    elsif num =~ /Eleven/i or num =~ /Eleventh/i or num =~ /11/i
       number = 11
-    elsif num =~ /Twelve/i or num =~ /Twelfth/i
+    elsif num =~ /Twelve/i or num =~ /Twelfth/i or num =~ /12/i
       number = 12
-    elsif num =~ /Thirteen/i or num =~ /Thirteenth/i
+    elsif num =~ /Thirteen/i or num =~ /Thirteenth/i or num =~ /13/i
       number = 13
-    elsif num =~ /Fourteen/i or num =~ /Fourteenth/i
+    elsif num =~ /Fourteen/i or num =~ /Fourteenth/i or num =~ /14/i
       number = 14
-    elsif num =~ /Fifteen/i or num =~ /Fifteenth/i
+    elsif num =~ /Fifteen/i or num =~ /Fifteenth/i or num =~ /15/i
       number = 15
     end
     return number
   end
   
   listen_for /Movie time(?:s)?/i do
-#    if location.country == "United States"
-#      say "Getting movie times for #{location.city}, #{location.state}"
-#      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
-#    else
-#      say "Getting movie times for #{location.city}, #{location.country}"
-#      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
-#    end
-    movies = GoogleShowtimes.for("Spring%2C+Texas")
+    if location.country == "United States"
+      say "Getting movie times for #{location.city}, #{location.state}"
+      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
+    else
+      say "Getting movie times for #{location.city}, #{location.country}"
+      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
+    end
     theaters = organizeFilmsByTheater(movies)
     
     more = true
     until more == false
       y = 0
       z = 1
-      say "Here are the closest theaters #{theaters.length} to you:"
+      say "Here are the #{theaters.length} closest theaters to you:"
       while z <= theaters.length do
         say "#{z}) #{theaters[z-1][:info][:name]}", spoken: ""
         z = z + 1
