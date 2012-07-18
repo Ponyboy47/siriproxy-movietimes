@@ -48,35 +48,6 @@ end
     return theaters
   end
 
-  def doEverythingElse(theaters,current)
-    view = SiriAddViews.new
-    view.make_root(last_ref_id)
-    view.scrollToTop = true
-    movieTimesLines1 = []
-    movieTimesList1 = []
-
-    if theaters[current] != nil
-      movies1 = theaters[current][:movies]
-      x = 0
-      until x == (movies1.count - 1)
-        movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:name]}")
-        movieTimesLines1 << SiriAnswerLine.new("#{movies1[x][:times]}")
-        x = x + 1
-      end
-      movieTimesList1 = SiriAnswer.new("#{theaters[current][:info][:name]}", movieTimesLines1)
-      moreTheaters1 = true
-    else
-      moreTheaters1 = false
-    end
-
-    if moreTheaters1 == false
-      return false
-    else
-      view.views << SiriAnswerSnippet.new(movieTimesList1)
-      return view
-    end
-  end
-  
   def doEverythingWithoutWolfram(theaters,current)
     movieTimesLines = Hash.new
 
@@ -145,47 +116,51 @@ end
       say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
     end
     
-    more = true
-    until more == false
-      y = 0
-      z = 1
-      while z <= theaters.length do
-        say "#{z}) #{theaters[z-1][:info][:name]}", spoken: ""
-        z = z + 1
+    y = 0
+    z = 1
+    while z <= theaters.length do
+      say "#{z}) #{theaters[z-1][:info][:name]}", spoken: ""
+      z = z + 1
+    end
+    x = ask "Which number theater would you like to see the showtimes for?"
+    x = getNum(x) if x.is_a?(Integer) == false
+    x = x - 1
+    shows = doEverythingWithoutWolfram(theaters,x)
+    if shows != false
+      say "Here are the showtimes for #{theaters[x][:info][:name]}"
+      while y < shows.length do
+        say "#{y+1}: #{shows[y][:title]}", spoken: ""
+        say "   #{shows[y][:showtimes]}", spoken: ""
+        y = y + 1
       end
-      x = ask "Which numbered theater would you like to see the showtimes for?"
-      x = getNum(x) if x.is_a?(Integer) == false
-      x = x - 1
-      shows = doEverythingWithoutWolfram(theaters,x)
-      if shows != false
-        while y < shows.length do
-          say "#{y+1}: #{shows[y][:title]}", spoken: ""
-          say "   #{shows[y][:showtimes]}", spoken: ""
-          y = y + 1
-        end
-        more = confirm "Would you like to see showtimes for other theaters?"
-      else
-        say "I'm sorry but I don't know which theater you wanted."
-      end
-#      if shows != false
-#        view = SiriAddViews.new
-#        view.make_root(last_ref_id)
-#        view.scrollToTop = true
-#        movieTimesLines = []
-#        movieTimesList = []
-#
-#        while y < shows.length do
-#          movieTimesLines << SiriAnswerLine.new("#{y+1}: #{shows[x][:title]}")
-#          movieTimesLines << SiriAnswerLine.new("#{shows[x][:showtimes]}")
-#          y = y + 1
-#        end
-#        movieTimesList = SiriAnswer.new("#{theaters[x][:info][:name]}", movieTimesLines)
-#        view.views << SiriAnswerSnippet.new(movieTimesList)
-#        send_object view
-#        more = confirm "Would you like to see showtimes for other theaters?"
-#      else
-#        say "I'm sorry but I don't know which theater you wanted."
-#      end
+    else
+      say "I'm sorry but I don't know which theater you wanted."
+    end
+    request_completed
+  end
+  
+  listen_for /Movie theater(?:s)?/i do
+    if location.country == "United States"
+      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
+      theaters = organizeFilmsByTheater(movies)
+      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
+    else
+      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
+      theaters = organizeFilmsByTheater(movies)
+      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
+    end
+    
+    y = 1
+    while y <= theaters.length do
+      say "#{y}) #{theaters[z-1][:info][:name]}", spoken: ""
+      y = y + 1
+    end
+    x = ask "Which number theater would you like?"
+    x = getNum(x) if x.is_a?(Integer) == false
+    x = x - 1
+    say "Here is the address and phone number for #{theaters[x][:info][:name]}"
+    say "#{theaters[x][:info][:address]}", spoken: "" #Will work on inserting map here
+    say "#{theaters[x][:info][:phone]}", spoken: ""
     end
     request_completed
   end
