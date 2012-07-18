@@ -152,7 +152,7 @@ end
     
     y = 1
     while y <= theaters.length do
-      say "#{y}) #{theaters[z-1][:info][:name]}", spoken: ""
+      say "#{y}) #{theaters[y-1][:info][:name]}", spoken: ""
       y = y + 1
     end
     x = ask "Which number theater would you like?"
