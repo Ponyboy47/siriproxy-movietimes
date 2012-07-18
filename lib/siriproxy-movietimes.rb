@@ -161,7 +161,6 @@ end
     say "Here is the address and phone number for #{theaters[x][:info][:name]}"
     say "#{theaters[x][:info][:address]}", spoken: "" #Will work on inserting map here
     say "#{theaters[x][:info][:phone]}", spoken: ""
-    end
     request_completed
   end
 end
