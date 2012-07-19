@@ -116,33 +116,49 @@ end
   end
   
   listen_for /Movie time(?:s)?/i do
+    theaterList = SiriAddViews.new
+    theaterList.make_root(last_ref_id)
+    theaterList.scrollToTop = true
     if location.country == "United States"
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
       theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
+      utterance = SiriAssistantUtteranceView.new("Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}")
     else
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
       theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
+      utterance = SiriAssistantUtteranceView.new("Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}")
     end
-    
+    theaterList.views << utterance
     y = 0
     z = 1
+    theaterArray = []
     while z <= theaters.length do
-      say "#{z}) #{theaters[z-1][:info][:name]}", spoken: ""
+      theaterArray << SiriAnswerLine.new("#{z}) #{theaters[z-1][:info][:name]}")
       z = z + 1
     end
-    x = ask "Which number theater would you like to see the showtimes for?"
+    list1 = SiriAnswer.new("Theaters near #{location.city}:", theaterArray)
+    theaterList.views << SiriAnswerSnippet.new([list1])
+    send_object theaterList
+    x = ask "Which theater number would you like to see the showtimes for?"
     x = getNum(x) if x.is_a?(Integer) == false
     x = x - 1
     shows = doEverythingWithoutWolfram(theaters,x)
+    showsList = SiriAddViews.new
+    showsList.make_root(last_ref_id)
+    showsList.scrollToTop = true
     if shows != false
-      say "Here are the showtimes for #{theaters[x][:info][:name]}"
+      utterance = SiriAssistantUtteranceView.new("Here are the showtimes for #{theaters[x][:info][:name]}")
+      showsList.views << utterance
+      movieArray = []
       while y < shows.length do
-        say "#{y+1}: #{shows[y][:title]}", spoken: ""
-        say "  #{shows[y][:showtimes].compact.join(', ')}", spoken: ""
+        movieArray << SiriAnswerLine.new("#{shows[y][:title]}")
+        movieArray << SiriAnswerLine.new("-#{shows[y][:showtimes].compact.join(', ')}")
+        movieArray << SiriAnswerLine.new("line","https://lh6.googleusercontent.com/-yqZpJuCpqlc/UAh6QyCsnJI/AAAAAAAAAF4/bUeaewYVf5w/s600/Line.jpg")
         y = y + 1
       end
+      list2 = SiriAnswer.new("#{theaters[x][:info][:name]}:", movieArray)
+      showsList.views << SiriAnswerSnippet.new([list2])
+      send_object showsList
     else
       say "I'm sorry but I don't know which theater you wanted."
     end
@@ -150,29 +166,37 @@ end
   end
   
   listen_for /Movie theater(?:s)?/i do
+    theaterList = SiriAddViews.new
+    theaterList.make_root(last_ref_id)
+    theaterList.scrollToTop = true
     if location.country == "United States"
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
       theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
+      utterance = SiriAssistantUtteranceView.new("Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}")
     else
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
       theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
+      utterance = SiriAssistantUtteranceView.new("Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}")
     end
-    
-    y = 1
-    while y <= theaters.length do
-      say "#{y}) #{theaters[y-1][:info][:name]}", spoken: ""
-      y = y + 1
+    theaterList.views << utterance
+    y = 0
+    z = 1
+    theaterArray = []
+    while z <= theaters.length do
+      theaterArray << SiriAnswerLine.new("#{z}) #{theaters[z-1][:info][:name]}")
+      z = z + 1
     end
-    x = ask "Which number theater would you like?"
+    list = SiriAnswer.new("Theaters near #{location.city}:", theaterArray)
+    theaterList.views << SiriAnswerSnippet.new([list])
+    send_object theaterList
+    x = ask "Which theater number would you like?"
     x = getNum(x) if x.is_a?(Integer) == false
     x = x - 1
     theater = Geokit::Geocoders::GoogleGeocoder.geocode("#{theaters[x][:info][:address]}")
     if theater.success == true
       theaterMap = SiriMapItem.new
       theaterMap.label = theaters[x][:info][:name]
-      theaterMap.detailType = "ADDRESS_ITEM"
+      theaterMap.detailType = "BUSINESS_ITEM"
       theaterMap.location = SiriLocation.new
       theaterMap.location.street = theater.street_address
       theaterMap.location.countryCode = theater.country_code
