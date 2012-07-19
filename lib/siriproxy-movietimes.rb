@@ -1,9 +1,12 @@
 require 'cora'
 require 'siri_objects'
 require 'google_showtimes'
+require 'geokit'
 
 class SiriProxy::Plugin::MovieTimes < SiriProxy::Plugin
+  
 def initialize(config)
+  Geokit::Geocoders::google = config['APIKey']
 end
 
   filter "SetRequestOrigin", direction: :from_iphone do |object|
@@ -71,17 +74,7 @@ end
   end
  
   def getNum(num)
-    if num =~ /One/i or num =~ /First/i or num =~ /1/i
-      number = 1
-    elsif num =~ /Two/i or num =~ /Second/i or num =~ /2/i
-      number = 2
-    elsif num =~ /Three/i or num =~ /Third/i or num =~ /3/i
-      number = 3
-    elsif num =~ /Four/i or num =~ /Fourth/i or num =~ /4/i
-      number = 4
-    elsif num =~ /Five/i or num =~ /Fifth/i or num =~ /5/i
-      number = 5
-    elsif num =~ /Six/i or num =~ /Sixth/i or num =~ /6/i
+    if num =~ /Six/i or num =~ /Sixth/i or num =~ /6/i
       number = 6
     elsif num =~ /Seven/i or num =~ /Seventh/i or num =~ /7/i
       number = 7
@@ -101,8 +94,25 @@ end
       number = 14
     elsif num =~ /Fifteen/i or num =~ /Fifteenth/i or num =~ /15/i
       number = 15
+    elsif num =~ /One/i or num =~ /First/i or num =~ /1/i
+      number = 1
+    elsif num =~ /Two/i or num =~ /Second/i or num =~ /2/i
+      number = 2
+    elsif num =~ /Three/i or num =~ /Third/i or num =~ /3/i
+      number = 3
+    elsif num =~ /Four/i or num =~ /Fourth/i or num =~ /4/i
+      number = 4
+    elsif num =~ /Five/i or num =~ /Fifth/i or num =~ /5/i
+      number = 5
+    else
+      number = nil
     end
-    return number
+    if number != nil
+      return number
+    else
+      again = ask "I'm sorry but didn't get that. Could you say the number again?"
+      getNum(again)
+    end
   end
   
   listen_for /Movie time(?:s)?/i do
@@ -158,9 +168,33 @@ end
     x = ask "Which number theater would you like?"
     x = getNum(x) if x.is_a?(Integer) == false
     x = x - 1
-    say "Here is the address and phone number for #{theaters[x][:info][:name]}"
-    say "#{theaters[x][:info][:address]}", spoken: "" #Will work on inserting map here
-    say "#{theaters[x][:info][:phone]}", spoken: ""
+    theater = Geokit::Geocoders::GoogleGeocoder.geocode("#{theaters[x][:info][:address]}")
+    if theater.success == true
+      theaterMap = SiriMapItem.new
+      theaterMap.label = theaters[x][:info][:name]
+      theaterMap.detailType = "ADDRESS_ITEM"
+      theaterMap.location = SiriLocation.new
+      theaterMap.location.street = theater.street_address
+      theaterMap.location.countryCode = theater.country_code
+      theaterMap.location.city = theater.city
+      theaterMap.location.stateCode = theater.state
+      theaterMap.location.latitude = theater.lat
+      theaterMap.location.longitude = theater.lng
+      theaterMap.location.postalCode = theater.zip
+      theaterView = SiriAddViews.new
+      theaterView.make_root(last_ref_id)
+      theaterView.scrollToTop = true
+      map_snippet = SiriMapItemSnippet.new
+      map_snippet.userCurrentLocation = false
+      map_snippet.items << theaterMap
+      utterance = SiriAssistantUtteranceView.new("Here is #{theaters[x][:info][:name]}","I have located #{theaters[x][:info][:name]} and made a map of where it is.")
+      theaterView.views << utterance
+      theaterView.views << map_snippet
+      send_object theaterView
+    else
+      say "Here is the address and phone number for #{theaters[x][:info][:name]}. I'm sorry I could not put it on a map for you."
+      say "#{theaters[x][:info][:address]}#{theaters[x][:info][:phone]}", spoken: ""
+    end
     request_completed
   end
 end
