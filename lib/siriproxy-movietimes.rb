@@ -38,7 +38,7 @@ end
           showtimes = []
           z = 0
           while z < film[1][y][:showtimes].length do
-            showtimes << film[1][y][:showtimes][z][:time].strftime("%H:%M")
+            showtimes << film[1][y][:showtimes][z][:time].strftime("%I:%M %p")
             z = z + 1
           end
           movies[movies.count] = { :name => film[1][y][:film][:name], :times => showtimes }
@@ -116,15 +116,17 @@ end
   end
   
   listen_for /Movie time(?:s)?/i do
-    if location.country == "United States"
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
+#    if location.country == "United States"
+#      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
+#      theaters = organizeFilmsByTheater(movies)
+#      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
+#    else
+#      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
+#      theaters = organizeFilmsByTheater(movies)
+#      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
+#    end
+      movies = GoogleShowtimes.for("Spring%2C+Texas")
       theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
-    else
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
-      theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
-    end
     
     y = 0
     z = 1
@@ -140,7 +142,7 @@ end
       say "Here are the showtimes for #{theaters[x][:info][:name]}"
       while y < shows.length do
         say "#{y+1}: #{shows[y][:title]}", spoken: ""
-        say "   #{shows[y][:showtimes]}", spoken: ""
+        say "   #{shows[y][:showtimes].compact.join(', ')}", spoken: ""
         y = y + 1
       end
     else
@@ -150,15 +152,15 @@ end
   end
   
   listen_for /Movie theater(?:s)?/i do
-    if location.country == "United States"
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
-      theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
-    else
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
-      theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
-    end
+#    if location.country == "United States"
+#      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
+#      theaters = organizeFilmsByTheater(movies)
+#      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
+#    else
+#      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
+#      theaters = organizeFilmsByTheater(movies)
+#      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
+#    end
     
     y = 1
     while y <= theaters.length do
