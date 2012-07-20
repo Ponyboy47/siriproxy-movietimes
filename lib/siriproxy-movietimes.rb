@@ -128,7 +128,6 @@ end
       theaters = organizeFilmsByTheater(movies)
       say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
     end
-    theaterList.views << utterance
     y = 0
     z = 1
     theaterArray = []
@@ -178,7 +177,6 @@ end
       theaters = organizeFilmsByTheater(movies)
       say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
     end
-    theaterList.views << utterance
     y = 0
     z = 1
     theaterArray = []
