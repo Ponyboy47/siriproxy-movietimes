@@ -3,12 +3,12 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "siriproxy-movietimes"
-  s.version     = "2.1.0" 
+  s.version     = "2.1.1" 
   s.authors     = ["Ponyboy47"]
   s.email       = ["ponyboy47@gmail.com"]
   s.homepage    = ""
   s.summary     = %q{Movietime Reader}
-  s.description = %q{Get movie times through Siri}
+  s.description = %q{Get movie times through Siri or nearest movie theaters.}
 
   s.rubyforge_project = "siriproxy-movietimes"
 
