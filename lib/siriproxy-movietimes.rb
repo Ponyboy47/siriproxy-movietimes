@@ -122,11 +122,11 @@ end
     if location.country == "United States"
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
       theaters = organizeFilmsByTheater(movies)
-      utterance = SiriAssistantUtteranceView.new("Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}")
+      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
     else
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
       theaters = organizeFilmsByTheater(movies)
-      utterance = SiriAssistantUtteranceView.new("Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}")
+      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
     end
     theaterList.views << utterance
     y = 0
