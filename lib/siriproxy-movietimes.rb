@@ -152,7 +152,7 @@ end
       movieArray = []
       while y < shows.length do
         movieArray << SiriAnswerLine.new("#{shows[y][:title]}")
-        movieArray << SiriAnswerLine.new("-#{shows[y][:showtimes].compact.join(', ')}")
+        movieArray << SiriAnswerLine.new("#{shows[y][:showtimes].compact.join(', ')}")
         movieArray << SiriAnswerLine.new("line","https://lh6.googleusercontent.com/-yqZpJuCpqlc/UAh6QyCsnJI/AAAAAAAAAF4/bUeaewYVf5w/s600/Line.jpg")
         y = y + 1
       end
