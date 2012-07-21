@@ -114,20 +114,10 @@ end
       getNum(again)
     end
   end
-  
-  listen_for /Movie time(?:s)?/i do
+  def showtimesStuff(theaters)
     theaterList = SiriAddViews.new
     theaterList.make_root(last_ref_id)
     theaterList.scrollToTop = true
-    if location.country == "United States"
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
-      theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
-    else
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
-      theaters = organizeFilmsByTheater(movies)
-      say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
-    end
     y = 0
     z = 1
     theaterArray = []
@@ -146,8 +136,7 @@ end
     showsList.make_root(last_ref_id)
     showsList.scrollToTop = true
     if shows != false
-      utterance = SiriAssistantUtteranceView.new("Here are the showtimes for #{theaters[x][:info][:name]}")
-      showsList.views << utterance
+      say "Here are the showtimes for #{theaters[x][:info][:name]}"
       movieArray = []
       while y < shows.length do
         movieArray << SiriAnswerLine.new("#{shows[y][:title]}")
@@ -161,13 +150,20 @@ end
     else
       say "I'm sorry but I don't know which theater you wanted."
     end
+  end
+  listen_for /Movie time(?:s)?/i do
+    if location.country == "United States"
+      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
+      theaters = organizeFilmsByTheater(movies)
+    else
+      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
+      theaters = organizeFilmsByTheater(movies)
+    end
+    showtimesStuff(theaters)
     request_completed
   end
   
   listen_for /Movie theater(?:s)?/i do
-    theaterList = SiriAddViews.new
-    theaterList.make_root(last_ref_id)
-    theaterList.scrollToTop = true
     if location.country == "United States"
       movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
       theaters = organizeFilmsByTheater(movies)
@@ -178,44 +174,47 @@ end
       say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
     end
     y = 0
-    z = 1
-    theaterArray = []
-    while z <= theaters.length do
-      theaterArray << SiriAnswerLine.new("#{z}) #{theaters[z-1][:info][:name]}")
+    z = 0
+    theatersView = SiriAddViews.new
+    theatersView.make_root(last_ref_id)
+    theatersView.scrollToTop = true
+    map_snippet = SiriMapItemSnippet.new
+    map_snippet.userCurrentLocation = true
+    while z < theaters.length do
+      theater = Geokit::Geocoders::GoogleGeocoder.geocode(theaters[z][:info][:address])
+      if theater.success == true
+        theaterMap = SiriActionableMapItem.new
+        theaterMapBusiness = SiriBusinessItem.new
+        theaterMapBusiness.name = theaters[z][:info][:name]
+        theaterMapBusiness.totalNumberOfReviews = 1
+        theaterMapBusiness.businessIds = {"yelp"=>"", "places"=>"", "localeze"=>""}
+        theaterMapBusiness.reviews = SiriBusinessReview.new
+        theaterMapBusiness.phoneNumbers = SiriBusinessPhoneNumber.new("#{theaters[z][:info][:phone]}","PRIMARY")
+        theaterMapBusiness.rating = SiriBusinessRating.new
+        theaterMapBusiness.extSessionGuid = ""
+        theaterMap.detail = theaterMapBusiness
+        theaterMap.label = theaters[z][:info][:name]
+        theaterMapLocation = SiriLocation.new
+        theaterMapLocation.street = theater.street_address
+        theaterMapLocation.countryCode = theater.country_code
+        theaterMapLocation.city = theater.city
+        theaterMapLocation.stateCode = theater.state
+        theaterMapLocation.latitude = theater.lat
+        theaterMapLocation.longitude = theater.lng
+        theaterMapLocation.postalCode = theater.zip
+        theaterMap.location = theaterMapLocation
+        theaterMap.identifier = ""
+        theaterMap.detailType = "BUSINESS_ITEM"
+        map_snippet.items << theaterMap
+      end
       z = z + 1
+      sleep 0.05 # Because I occasionally get a crash from making too many google places requests too close together
     end
-    list = SiriAnswer.new("Theaters near #{location.city}:", theaterArray)
-    theaterList.views << SiriAnswerSnippet.new([list])
-    send_object theaterList
-    x = ask "Which theater number would you like?"
-    x = getNum(x) if x.is_a?(Integer) == false
-    x = x - 1
-    theater = Geokit::Geocoders::GoogleGeocoder.geocode("#{theaters[x][:info][:address]}")
-    if theater.success == true
-      theaterMap = SiriMapItem.new
-      theaterMap.label = theaters[x][:info][:name]
-      theaterMap.detailType = "BUSINESS_ITEM"
-      theaterMap.location = SiriLocation.new
-      theaterMap.location.street = theater.street_address
-      theaterMap.location.countryCode = theater.country_code
-      theaterMap.location.city = theater.city
-      theaterMap.location.stateCode = theater.state
-      theaterMap.location.latitude = theater.lat
-      theaterMap.location.longitude = theater.lng
-      theaterMap.location.postalCode = theater.zip
-      theaterView = SiriAddViews.new
-      theaterView.make_root(last_ref_id)
-      theaterView.scrollToTop = true
-      map_snippet = SiriMapItemSnippet.new
-      map_snippet.userCurrentLocation = false
-      map_snippet.items << theaterMap
-      utterance = SiriAssistantUtteranceView.new("Here is #{theaters[x][:info][:name]}","I have located #{theaters[x][:info][:name]} and made a map of where it is.")
-      theaterView.views << utterance
-      theaterView.views << map_snippet
-      send_object theaterView
-    else
-      say "Here is the address and phone number for #{theaters[x][:info][:name]}. I'm sorry I could not put it on a map for you."
-      say "#{theaters[x][:info][:address]}#{theaters[x][:info][:phone]}", spoken: ""
+    theatersView.views << map_snippet
+    send_object theatersView
+    showtimes = confirm "Would you like showtimes for one of these theaters?"
+    if showtimes
+      showtimesStuff(theaters)
     end
     request_completed
   end
