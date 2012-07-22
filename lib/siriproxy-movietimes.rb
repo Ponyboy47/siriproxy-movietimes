@@ -206,9 +206,38 @@ end
         theaterMap.identifier = ""
         theaterMap.detailType = "BUSINESS_ITEM"
         map_snippet.items << theaterMap
+      else
+        theaterAddress = theaters[z][:info][:address]
+        theaterAddress = theaterAddress[0..-21]
+        theaterPhone = theaters[z][:info][:address]
+        theaterPhone = theaterPhone[-18..-1]
+        theater = Geokit::Geocoders::GoogleGeocoder.geocode(theaterAddress)
+        theaterMap = SiriActionableMapItem.new
+        theaterMapBusiness = SiriBusinessItem.new
+        theaterMapBusiness.name = theaters[z][:info][:name]
+        theaterMapBusiness.totalNumberOfReviews = 1
+        theaterMapBusiness.businessIds = {"yelp"=>"", "places"=>"", "localeze"=>""}
+        theaterMapBusiness.reviews = SiriBusinessReview.new
+        theaterMapBusiness.phoneNumbers = SiriBusinessPhoneNumber.new("#{theaterPhone}#{theaters[z][:info][:phone]}","PRIMARY")
+        theaterMapBusiness.rating = SiriBusinessRating.new
+        theaterMapBusiness.extSessionGuid = ""
+        theaterMap.detail = theaterMapBusiness
+        theaterMap.label = theaters[z][:info][:name]
+        theaterMapLocation = SiriLocation.new
+        theaterMapLocation.street = theater.street_address
+        theaterMapLocation.countryCode = theater.country_code
+        theaterMapLocation.city = theater.city
+        theaterMapLocation.stateCode = theater.state
+        theaterMapLocation.latitude = theater.lat
+        theaterMapLocation.longitude = theater.lng
+        theaterMapLocation.postalCode = theater.zip
+        theaterMap.location = theaterMapLocation
+        theaterMap.identifier = ""
+        theaterMap.detailType = "BUSINESS_ITEM"
+        map_snippet.items << theaterMap
       end
       z = z + 1
-      sleep 0.05 # Because I occasionally get a crash from making too many google places requests too close together
+      sleep 0.1 # Because I occasionally get a crash from making too many google places requests too close together
     end
     theatersView.views << map_snippet
     send_object theatersView
