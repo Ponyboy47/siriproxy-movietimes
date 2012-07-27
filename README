@@ -1,5 +1,6 @@
 Be sure to copy everything from config-info.yml into your config.yml
-This plugin will read you the movie times for local theaters or the address and phone number for a theater
+This plugin will read you the movie times for local theaters
 ** This plugin will not work on anyone else's proxies because I have made certain additions to my proxy that allow me to do more with my plugins. I will share the code I have added to my proxy when I've worked the bugs out of it. **
-Ask Siri for "Movie Times" if you know which theater you would like to see the times for.
+Ask Siri for "Movie Times by theater" if you know which theater you will be going to but are not sure which movie.
+Ask Siri for "Movie Times by movie" if you know which movie you want to see but are not sure which theater to see it at.
 If you're in an area you are unfamiliar with then ask for "Movie Theaters" to see which are closest to you. *Locations must be turned on*

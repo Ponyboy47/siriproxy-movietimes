@@ -12,17 +12,24 @@ end
   filter "SetRequestOrigin", direction: :from_iphone do |object|
     puts "[Info - User Location] lat: #{object["properties"]["latitude"]}, long: #{object["properties"]["longitude"]}"
   end
+  filter "SnippetAttributeOpened", direction: :from_iphone do |object|
+    puts "[Info - SiriProxy::Plugin::MovieTimes] Got Command!"
+  end
+  filter "SendCommands", direction: :from_iphone do |object|
+    puts "[Info - SiriProxy::Plugin::MovieTimes] Got Command!"
+  end
 
-  def organizeFilmsByTheater(film)
+  def organizeByTheater(film)
     theaters = Hash.new
     theaternames = []
-    theaterinfo = []
+    duplicatetheater = []
     w = 0
     x = 0
     
     while w < film[1].length do
-      if theaterinfo.include?(film[1][w][:cinema][:name]) == false
+      if duplicatetheater.include?(film[1][w][:cinema][:name]) == false
         theaterinfo = []
+        duplicatetheater << film[1][w][:cinema][:name]
         theaterinfo << film[1][w][:cinema][:name]
         theaterinfo << film[1][w][:cinema][:address]
         theaterinfo << film[1][w][:cinema][:phone]
@@ -38,9 +45,13 @@ end
           showtimes = []
           z = 0
           while z < film[1][y][:showtimes].length do
-            showtimes << film[1][y][:showtimes][z][:time].strftime("%I:%M %p")
+            time = film[1][y][:showtimes][z][:time].utc
+            showtimes << time.strftime("%l:%M %P") if time.hour >= Time.now().hour
             z = z + 1
           end
+          showtimes.sort
+          showtimes.each {|a| a.strip! if a.respond_to? :strip! }
+          showtimes.delete(showtimes.last)
           movies[movies.count] = { :name => film[1][y][:film][:name], :times => showtimes }
         end
         y = y + 1
@@ -50,8 +61,49 @@ end
     end
     return theaters
   end
+  
+  def organizeByFilm(film)
+    movies = Hash.new
+    movienames = []
+    duplicatemovie = []
+    w = 0
+    x = 0
+    
+    while w < film[1].length do
+      if duplicatemovie.include?(film[1][w][:film][:name]) == false
+        movieinfo = []
+        duplicatemovie << film[1][w][:film][:name]
+        movieinfo << film[1][w][:film][:name]
+        movienames << movieinfo
+       end
+      w = w + 1
+    end
+    while x < movienames.length do
+      y = 0
+      theaters = Hash.new
+      while y < film[1].length do
+        if film[1][y][:film][:name] == movienames[x][0]
+          showtimes = []
+          z = 0
+          while z < film[1][y][:showtimes].length do
+            time = film[1][y][:showtimes][z][:time].utc
+            showtimes << time.strftime("%l:%M %P") if time.hour >= Time.now().hour
+            z = z + 1
+          end
+          showtimes.sort
+          showtimes.each {|a| a.strip! if a.respond_to? :strip! }
+          showtimes.delete(showtimes.last)
+          theaters[theaters.count] = { :name => film[1][y][:cinema][:name], :address => film[1][y][:cinema][:address], :phone => film[1][y][:cinema][:phone], :times => showtimes }
+        end
+        y = y + 1
+      end
+      movies[x] = { :name => movienames[x][0], :theater => theaters }
+      x = x + 1
+    end
+    return movies
+  end
 
-  def doEverythingWithoutWolfram(theaters,current)
+  def getMovieTimesLines(theaters,current)
     movieTimesLines = Hash.new
 
     if theaters[current] != nil
@@ -70,6 +122,28 @@ end
       return false
     else
       return movieTimesLines
+    end
+  end
+
+  def getTheaterTimesLines(movies,current)
+    theaterTimesLines = Hash.new
+
+    if movies[current] != nil
+      theater = movies[current][:theater]
+      x = 0
+      while x < theater.length do
+        theaterTimesLines[x] = { :theater => theater[x][:name], :showtimes => theater[x][:times] }
+        x = x + 1
+      end
+      movie = true
+    else
+      movie = false
+    end
+
+    if movie == false
+      return false
+    else
+      return theaterTimesLines
     end
   end
  
@@ -94,6 +168,76 @@ end
       number = 14
     elsif num =~ /Fifteen/i or num =~ /Fifteenth/i or num =~ /15/i
       number = 15
+    elsif num =~ /Sixteen/i or num =~ /Sixteenth/i or num =~ /16/i
+      number = 16
+    elsif num =~ /Seventeen/i or num =~ /Sevententh/i or num =~ /17/i
+      number = 17
+    elsif num =~ /Eighteen/i or num =~ /Eighteenth/i or num =~ /18/i
+      number = 18
+    elsif num =~ /Nineteen/i or num =~ /Nineteenth/i or num =~ /19/i
+      number = 19
+    elsif num =~ /Twenty/i or num =~ /Twentieth/i or num =~ /20/i
+      number = 20
+    elsif num =~ /21/i
+      number = 21
+    elsif num =~ /22/i
+      number = 22
+    elsif num =~ /23/i
+      number = 23
+    elsif num =~ /24/i
+      number = 24
+    elsif num =~ /25/i
+      number = 25
+    elsif num =~ /26/i
+      number = 26
+    elsif num =~ /27/i
+      number = 27
+    elsif num =~ /28/i
+      number = 28
+    elsif num =~ /29/i
+      number = 29
+    elsif num =~ /30/i
+      number = 30
+    elsif num =~ /31/i
+      number = 31
+    elsif num =~ /32/i
+      number = 32
+    elsif num =~ /33/i
+      number = 33
+    elsif num =~ /34/i
+      number = 34
+    elsif num =~ /35/i
+      number = 35
+    elsif num =~ /36/i
+      number = 36
+    elsif num =~ /37/i
+      number = 37
+    elsif num =~ /38/i
+      number = 38
+    elsif num =~ /39/i
+      number = 39
+    elsif num =~ /40/i
+      number = 40
+    elsif num =~ /41/i
+      number = 41
+    elsif num =~ /42/i
+      number = 42
+    elsif num =~ /43/i
+      number = 43
+    elsif num =~ /44/i
+      number = 44
+    elsif num =~ /45/i
+      number = 45
+    elsif num =~ /46/i
+      number = 46
+    elsif num =~ /47/i
+      number = 47
+    elsif num =~ /48/i
+      number = 48
+    elsif num =~ /49/i
+      number = 49
+    elsif num =~ /50/i
+      number = 50
     elsif num =~ /One/i or num =~ /First/i or num =~ /1/i
       number = 1
     elsif num =~ /Two/i or num =~ /Second/i or num =~ /2/i
@@ -114,7 +258,8 @@ end
       getNum(again)
     end
   end
-  def showtimesStuff(theaters)
+  
+  def showtimesDisplay_Theater(theaters)
     theaterList = SiriAddViews.new
     theaterList.make_root(last_ref_id)
     theaterList.scrollToTop = true
@@ -131,7 +276,7 @@ end
     x = ask "Which theater number would you like to see the showtimes for?"
     x = getNum(x) if x.is_a?(Integer) == false
     x = x - 1
-    shows = doEverythingWithoutWolfram(theaters,x)
+    shows = getMovieTimesLines(theaters,x)
     showsList = SiriAddViews.new
     showsList.make_root(last_ref_id)
     showsList.scrollToTop = true
@@ -151,26 +296,77 @@ end
       say "I'm sorry but I don't know which theater you wanted."
     end
   end
-  listen_for /Movie time(?:s)?/i do
-    if location.country == "United States"
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
-      theaters = organizeFilmsByTheater(movies)
-    else
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
-      theaters = organizeFilmsByTheater(movies)
+  
+  def showtimesDisplay_Movie(movies)
+    movieList = SiriAddViews.new
+    movieList.make_root(last_ref_id)
+    movieList.scrollToTop = true
+    y = 0
+    z = 1
+    movieArray = []
+    while z <= movies.length do
+      movieArray << SiriAnswerLine.new("#{z}) #{movies[z-1][:name]}")
+      z = z + 1
     end
-    showtimesStuff(theaters)
+    list1 = SiriAnswer.new("Movies near Spring", movieArray)
+    movieList.views << SiriAnswerSnippet.new([list1])
+    send_object movieList
+    x = ask "Which number movie would you like to see all showtimes for?"
+    x = getNum(x) if x.is_a?(Integer) == false
+    x = x - 1
+    showings = getTheaterTimesLines(movies,x)
+    showingsList = SiriAddViews.new
+    showingsList.make_root(last_ref_id)
+    showingsList.scrollToTop = true
+    if showings != false
+      say "Here are the showtimes for #{movies[x][:name]}"
+      theaterArray = []
+      while y < showings.length do
+        theaterArray << SiriAnswerLine.new("#{showings[y][:theater]}")
+        theaterArray << SiriAnswerLine.new("#{showings[y][:showtimes].compact.join(', ')}")
+        theaterArray << SiriAnswerLine.new("line","https://lh6.googleusercontent.com/-yqZpJuCpqlc/UAh6QyCsnJI/AAAAAAAAAF4/bUeaewYVf5w/s600/Line.jpg")
+        y = y + 1
+      end
+      list2 = SiriAnswer.new("#{movies[x][:name]}:", theaterArray)
+      showingsList.views << SiriAnswerSnippet.new([list2])
+      send_object showingsList
+    else
+      say "I'm sorry but I don't know which movie you wanted."
+    end
+  end
+  
+  listen_for /Movie time(?:s)? by theater/i do
+    if location.country == "United States"
+      movies = GoogleShowtimes.for("#{location.city}, #{location.state}")
+      theaters = organizeByTheater(movies)
+    else
+      movies = GoogleShowtimes.for("#{location.city}, #{location.country}")
+      theaters = organizeByTheater(movies)
+    end
+    showtimesDisplay_Theater(theaters)
+    request_completed
+  end
+  
+  listen_for /Movie time(?:s)? by movie/i do
+    if location.country == "United States"
+      movies = GoogleShowtimes.for("#{location.city}, #{location.state}")
+      movies = organizeByFilm(movies)
+    else
+      movies = GoogleShowtimes.for("#{location.city}, #{location.country}")
+      movies = organizeByFilm(movies)
+    end
+    showtimesDisplay_Movie(movies)
     request_completed
   end
   
   listen_for /Movie theater(?:s)?/i do
     if location.country == "United States"
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.state}")
-      theaters = organizeFilmsByTheater(movies)
+      movies = GoogleShowtimes.for("#{location.city}, #{location.state}")
+      theaters = organizeByTheater(movies)
       say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.state}"
     else
-      movies = GoogleShowtimes.for("#{location.city}%2C+#{location.country}")
-      theaters = organizeFilmsByTheater(movies)
+      movies = GoogleShowtimes.for("#{location.city}, #{location.country}")
+      theaters = organizeByTheater(movies)
       say "Here are the #{theaters.length} closest theaters to #{location.city}, #{location.country}"
     end
     y = 0
@@ -203,6 +399,13 @@ end
         theaterMapLocation.longitude = theater.lng
         theaterMapLocation.postalCode = theater.zip
         theaterMap.location = theaterMapLocation
+        theaterMapCommands = SiriSnippetAttributeOpenedCommand.new
+        theaterMapCommands.request_id = "Get-Current-Movie-Theater"
+        theaterMapCommands.attributeValue = "#{z}"
+        theaterMapCommands.attributeName = "#{theaters[z][:info][:name]}"
+        commands = SiriSendCommands.new
+        commands.commands << theaterMapCommands
+        theaterMap.commands << commands
         theaterMap.identifier = ""
         theaterMap.detailType = "BUSINESS_ITEM"
         map_snippet.items << theaterMap
@@ -232,6 +435,13 @@ end
         theaterMapLocation.longitude = theater.lng
         theaterMapLocation.postalCode = theater.zip
         theaterMap.location = theaterMapLocation
+        theaterMapCommands = SiriSnippetAttributeOpenedCommand.new
+        theaterMapCommands.request_id = "Get-Current-Movie-Theater"
+        theaterMapCommands.attributeValue = "#{z}"
+        theaterMapCommands.attributeName = "#{theaters[z][:info][:name]}"
+        commands = SiriSendCommands.new
+        commands.commands << theaterMapCommands
+        theaterMap.commands << commands
         theaterMap.identifier = ""
         theaterMap.detailType = "BUSINESS_ITEM"
         map_snippet.items << theaterMap
@@ -241,10 +451,10 @@ end
     end
     theatersView.views << map_snippet
     send_object theatersView
-    showtimes = confirm "Would you like showtimes for one of these theaters?"
-    if showtimes
-      showtimesStuff(theaters)
-    end
+#    showtimes = confirm "Would you like showtimes for one of these theaters?"
+#    if showtimes
+#      showtimesDisplay_Theater(theaters)
+#    end
     request_completed
   end
 end
