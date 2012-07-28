@@ -19,6 +19,118 @@ end
     puts "[Info - SiriProxy::Plugin::MovieTimes] Got Command!"
   end
 
+  def getNum(num)   #Let's hope there's less than 50 movies/theaters!
+    if /Ten/i.match(num) or /10/.match(num)
+      number = 10
+    elsif /Eleven/i.match(num) or /11/.match(num)
+      number = 11
+    elsif /Twelve/i.match(num) or /Twelfth/i.match(num) or /12/.match(num)
+      number = 12
+    elsif /Thirteen/i.match(num) or /13/.match(num)
+      number = 13
+    elsif /Fourteen/i.match(num) or /14/.match(num)
+      number = 14
+    elsif /Fifteen/i.match(num) or /15/.match(num)
+      number = 15
+    elsif /Sixteen/i.match(num) or /16/.match(num)
+      number = 16
+    elsif /Seventeen/i.match(num) or /17/.match(num)
+      number = 17
+    elsif /Eighteen/i.match(num) or /18/.match(num)
+      number = 18
+    elsif /Nineteen/i.match(num) or /19/.match(num)
+      number = 19
+    elsif /Twenty One/i.match(num) or /Twenty First/i.match(num) or /21/.match(num)
+      number = 21
+    elsif /Twenty Two/i.match(num) or /Twenty Second/i.match(num) or /22/.match(num)
+      number = 22
+    elsif /Twenty Three/i.match(num) or /Twenty Third/i.match(num) or /23/.match(num)
+      number = 23
+    elsif /Twenty Four/i.match(num) or /24/.match(num)
+      number = 24
+    elsif /Twenty Five/i.match(num) or /Twenty Fifth/i.match(num) or /25/.match(num)
+      number = 25
+    elsif /Twenty Six/i.match(num) or /26/.match(num)
+      number = 26
+    elsif /Twenty Seven/i.match(num) or /27/.match(num)
+      number = 27
+    elsif /Twenty Eight/i.match(num) or /28/.match(num)
+      number = 28
+    elsif /Twenty Nine/i.match(num) or /Twenty Ninth/i.match(num) or /29/.match(num)
+      number = 29
+    elsif /Twenty/i.match(num) or /Twentieth/i.match(num) or /20/.match(num)
+      number = 20
+    elsif /Thirty One/i.match(num) or /Thirty First/i.match(num) or /31/.match(num)
+      number = 31
+    elsif /Thirty Two/i.match(num) or /Thirty Second/i.match(num) or /32/.match(num)
+      number = 32
+    elsif /Thirty Three/i.match(num) or /Thirty Third/i.match(num) or /33/.match(num)
+      number = 33
+    elsif /Thirty Four/i.match(num) or /34/.match(num)
+      number = 34
+    elsif /Thirty Five/i.match(num) or /Thirty Fifth/i.match(num) or /35/.match(num)
+      number = 35
+    elsif /Thirty Six/i.match(num) or /36/.match(num)
+      number = 36
+    elsif /Thirty Seven/i.match(num) or /37/.match(num)
+      number = 37
+    elsif /Thirty Eight/i.match(num) or /38/.match(num)
+      number = 38
+    elsif /Thirty Nine/i.match(num) or /Thirty Ninth/i.match(num) or /39/.match(num)
+      number = 39
+    elsif /Thirty/i.match(num) or /Thirtieth/i.match(num) or /30/.match(num)
+      number = 30
+    elsif /Fourty One/i.match(num) or /Fourty First/i.match(num) or /41/.match(num)
+      number = 41
+    elsif /Fourty Two/i.match(num) or /Fourty Second/i.match(num) or /42/.match(num)
+      number = 42
+    elsif /Fourty Three/i.match(num) or /Fourty Third/i.match(num) or /43/.match(num)
+      number = 43
+    elsif /Fourty Four/i.match(num) or /44/.match(num)
+      number = 44
+    elsif /Fourty Five/i.match(num) or /Fourty Fifth/i.match(num) or /45/.match(num)
+      number = 45
+    elsif /Fourty Six/i.match(num) or /46/.match(num)
+      number = 46
+    elsif /Fourty Seven/i.match(num) or /47/.match(num)
+      number = 47
+    elsif /Fourty Eight/i.match(num) or /48/.match(num)
+      number = 48
+    elsif /Fourty Nine/i.match(num) or num.match(/Fourty Ninth/i) or /49/.match(num)
+      number = 49
+    elsif /Fourty/i.match(num) or /Fourtieth/i.match(num) or /40/.match(num)
+      number = 40
+    elsif /Fifty/i.match(num) or /Fiftieth/i.match(num) or /50/.match(num)
+      number = 50
+    elsif /Two/i.match(num) or /Second/i.match(num) or /2/.match(num)
+      number = 2
+    elsif /Three/i.match(num) or /Third/i.match(num) or /3/.match(num)
+      number = 3
+    elsif /Four/i.match(num) or /4/.match(num)
+      number = 4
+    elsif /Five/i.match(num) or /Fifth/i.match(num) or /5/.match(num)
+      number = 5
+    elsif num.match(/Six/i) or /6/.match(num)
+      number = 6
+    elsif num.match(/Seven/i) or /7/.match(num)
+      number = 7
+    elsif num.match(/Eight/i) or /8/.match(num)
+      number = 8
+    elsif /Nine/i.match(num) or /Ninth/i.match(num) or /9/.match(num)
+      number = 9
+    elsif /One/i.match(num) or /First/i.match(num) or /1/.match(num)
+      number = 1
+    else
+      number = nil
+    end
+    if number != nil
+      return number
+    else
+      again = ask "I'm sorry but didn't get that. Could you say the number again?"
+      getNum(again)
+    end
+  end
+
   def organizeByTheater(film)
     theaters = Hash.new
     theaternames = []
@@ -35,7 +147,7 @@ end
         theaterinfo << film[1][w][:cinema][:phone]
         theaternames << theaterinfo
        end
-      w = w + 1
+      w += 1
     end
     while x < theaternames.length do
       y = 0
@@ -47,17 +159,17 @@ end
           while z < film[1][y][:showtimes].length do
             time = film[1][y][:showtimes][z][:time].utc
             showtimes << time.strftime("%l:%M %P") if time.hour >= Time.now().hour
-            z = z + 1
+            z += 1
           end
           showtimes.sort
           showtimes.each {|a| a.strip! if a.respond_to? :strip! }
           showtimes.delete(showtimes.last)
           movies[movies.count] = { :name => film[1][y][:film][:name], :times => showtimes }
         end
-        y = y + 1
+        y += 1
       end
       theaters[x] = { :info => { :name => theaternames[x][0], :address => theaternames[x][1], :phone => theaternames[x][2] }, :movies => movies }
-      x = x + 1
+      x += 1
     end
     return theaters
   end
@@ -76,7 +188,7 @@ end
         movieinfo << film[1][w][:film][:name]
         movienames << movieinfo
        end
-      w = w + 1
+      w += 1
     end
     while x < movienames.length do
       y = 0
@@ -88,21 +200,21 @@ end
           while z < film[1][y][:showtimes].length do
             time = film[1][y][:showtimes][z][:time].utc
             showtimes << time.strftime("%l:%M %P") if time.hour >= Time.now().hour
-            z = z + 1
+            z += 1
           end
           showtimes.sort
           showtimes.each {|a| a.strip! if a.respond_to? :strip! }
           showtimes.delete(showtimes.last)
           theaters[theaters.count] = { :name => film[1][y][:cinema][:name], :address => film[1][y][:cinema][:address], :phone => film[1][y][:cinema][:phone], :times => showtimes }
         end
-        y = y + 1
+        y += 1
       end
       movies[x] = { :name => movienames[x][0], :theater => theaters }
-      x = x + 1
+      x += 1
     end
     return movies
   end
-
+  
   def getMovieTimesLines(theaters,current)
     movieTimesLines = Hash.new
 
@@ -111,7 +223,7 @@ end
       x = 0
       while x < movies.length do
         movieTimesLines[x] = { :title => movies[x][:name], :showtimes => movies[x][:times] }
-        x = x + 1
+        x += 1
       end
       theater = true
     else
@@ -133,7 +245,7 @@ end
       x = 0
       while x < theater.length do
         theaterTimesLines[x] = { :theater => theater[x][:name], :showtimes => theater[x][:times] }
-        x = x + 1
+        x += 1
       end
       movie = true
     else
@@ -146,118 +258,6 @@ end
       return theaterTimesLines
     end
   end
- 
-  def getNum(num)
-    if num =~ /Six/i or num =~ /Sixth/i or num =~ /6/i
-      number = 6
-    elsif num =~ /Seven/i or num =~ /Seventh/i or num =~ /7/i
-      number = 7
-    elsif num =~ /Eight/i or num =~ /Eighth/i or num =~ /8/i
-      number = 8
-    elsif num =~ /Nine/i or num =~ /Ninth/i or num =~ /9/i
-      number = 9
-    elsif num =~ /Ten/i or num =~ /Tenth/i or num =~ /10/i
-      number = 10
-    elsif num =~ /Eleven/i or num =~ /Eleventh/i or num =~ /11/i
-      number = 11
-    elsif num =~ /Twelve/i or num =~ /Twelfth/i or num =~ /12/i
-      number = 12
-    elsif num =~ /Thirteen/i or num =~ /Thirteenth/i or num =~ /13/i
-      number = 13
-    elsif num =~ /Fourteen/i or num =~ /Fourteenth/i or num =~ /14/i
-      number = 14
-    elsif num =~ /Fifteen/i or num =~ /Fifteenth/i or num =~ /15/i
-      number = 15
-    elsif num =~ /Sixteen/i or num =~ /Sixteenth/i or num =~ /16/i
-      number = 16
-    elsif num =~ /Seventeen/i or num =~ /Sevententh/i or num =~ /17/i
-      number = 17
-    elsif num =~ /Eighteen/i or num =~ /Eighteenth/i or num =~ /18/i
-      number = 18
-    elsif num =~ /Nineteen/i or num =~ /Nineteenth/i or num =~ /19/i
-      number = 19
-    elsif num =~ /Twenty/i or num =~ /Twentieth/i or num =~ /20/i
-      number = 20
-    elsif num =~ /21/i
-      number = 21
-    elsif num =~ /22/i
-      number = 22
-    elsif num =~ /23/i
-      number = 23
-    elsif num =~ /24/i
-      number = 24
-    elsif num =~ /25/i
-      number = 25
-    elsif num =~ /26/i
-      number = 26
-    elsif num =~ /27/i
-      number = 27
-    elsif num =~ /28/i
-      number = 28
-    elsif num =~ /29/i
-      number = 29
-    elsif num =~ /30/i
-      number = 30
-    elsif num =~ /31/i
-      number = 31
-    elsif num =~ /32/i
-      number = 32
-    elsif num =~ /33/i
-      number = 33
-    elsif num =~ /34/i
-      number = 34
-    elsif num =~ /35/i
-      number = 35
-    elsif num =~ /36/i
-      number = 36
-    elsif num =~ /37/i
-      number = 37
-    elsif num =~ /38/i
-      number = 38
-    elsif num =~ /39/i
-      number = 39
-    elsif num =~ /40/i
-      number = 40
-    elsif num =~ /41/i
-      number = 41
-    elsif num =~ /42/i
-      number = 42
-    elsif num =~ /43/i
-      number = 43
-    elsif num =~ /44/i
-      number = 44
-    elsif num =~ /45/i
-      number = 45
-    elsif num =~ /46/i
-      number = 46
-    elsif num =~ /47/i
-      number = 47
-    elsif num =~ /48/i
-      number = 48
-    elsif num =~ /49/i
-      number = 49
-    elsif num =~ /50/i
-      number = 50
-    elsif num =~ /One/i or num =~ /First/i or num =~ /1/i
-      number = 1
-    elsif num =~ /Two/i or num =~ /Second/i or num =~ /2/i
-      number = 2
-    elsif num =~ /Three/i or num =~ /Third/i or num =~ /3/i
-      number = 3
-    elsif num =~ /Four/i or num =~ /Fourth/i or num =~ /4/i
-      number = 4
-    elsif num =~ /Five/i or num =~ /Fifth/i or num =~ /5/i
-      number = 5
-    else
-      number = nil
-    end
-    if number != nil
-      return number
-    else
-      again = ask "I'm sorry but didn't get that. Could you say the number again?"
-      getNum(again)
-    end
-  end
   
   def showtimesDisplay_Theater(theaters)
     theaterList = SiriAddViews.new
@@ -268,7 +268,7 @@ end
     theaterArray = []
     while z <= theaters.length do
       theaterArray << SiriAnswerLine.new("#{z}) #{theaters[z-1][:info][:name]}")
-      z = z + 1
+      z += 1
     end
     list1 = SiriAnswer.new("Theaters near #{location.city}:", theaterArray)
     theaterList.views << SiriAnswerSnippet.new([list1])
@@ -287,7 +287,7 @@ end
         movieArray << SiriAnswerLine.new("#{shows[y][:title]}")
         movieArray << SiriAnswerLine.new("#{shows[y][:showtimes].compact.join(', ')}")
         movieArray << SiriAnswerLine.new("line","https://lh6.googleusercontent.com/-yqZpJuCpqlc/UAh6QyCsnJI/AAAAAAAAAF4/bUeaewYVf5w/s600/Line.jpg")
-        y = y + 1
+        y += 1
       end
       list2 = SiriAnswer.new("#{theaters[x][:info][:name]}:", movieArray)
       showsList.views << SiriAnswerSnippet.new([list2])
@@ -306,9 +306,9 @@ end
     movieArray = []
     while z <= movies.length do
       movieArray << SiriAnswerLine.new("#{z}) #{movies[z-1][:name]}")
-      z = z + 1
+      z += 1
     end
-    list1 = SiriAnswer.new("Movies near Spring", movieArray)
+    list1 = SiriAnswer.new("Movies near #{location.city}", movieArray)
     movieList.views << SiriAnswerSnippet.new([list1])
     send_object movieList
     x = ask "Which number movie would you like to see all showtimes for?"
@@ -325,7 +325,7 @@ end
         theaterArray << SiriAnswerLine.new("#{showings[y][:theater]}")
         theaterArray << SiriAnswerLine.new("#{showings[y][:showtimes].compact.join(', ')}")
         theaterArray << SiriAnswerLine.new("line","https://lh6.googleusercontent.com/-yqZpJuCpqlc/UAh6QyCsnJI/AAAAAAAAAF4/bUeaewYVf5w/s600/Line.jpg")
-        y = y + 1
+        y += 1
       end
       list2 = SiriAnswer.new("#{movies[x][:name]}:", theaterArray)
       showingsList.views << SiriAnswerSnippet.new([list2])
@@ -335,7 +335,7 @@ end
     end
   end
   
-  listen_for /Movie time(?:s)? by theater/i do
+  listen_for /Theater showtime(?:s)?/i do
     if location.country == "United States"
       movies = GoogleShowtimes.for("#{location.city}, #{location.state}")
       theaters = organizeByTheater(movies)
@@ -347,7 +347,7 @@ end
     request_completed
   end
   
-  listen_for /Movie time(?:s)? by movie/i do
+  listen_for /Movie showtime(?:s)?/i do
     if location.country == "United States"
       movies = GoogleShowtimes.for("#{location.city}, #{location.state}")
       movies = organizeByFilm(movies)
@@ -356,6 +356,140 @@ end
       movies = organizeByFilm(movies)
     end
     showtimesDisplay_Movie(movies)
+    request_completed
+  end
+  
+  listen_for /Movie times(?:s)? for (.*)/i do |day|
+    now = Time.now().utc
+    if /Today/i.match(day)
+      date = 0
+    elsif /Tomorrow/i.match(day)
+      date = 1
+    elsif /Sunday/i.match(day)
+      if now.wday == 0
+        date = 0
+      elsif now.wday == 1
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 2
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 3
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 4
+        date = 3
+      elsif now.wday == 5
+        date = 2
+      elsif now.wday == 6
+        date = 1
+      end
+    elsif /Monday/i.match(day)
+      if now.wday == 0
+        date = 1
+      elsif now.wday == 1
+        date = 0
+      elsif now.wday == 2
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 3
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 4
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 5
+        date = 3
+      elsif now.wday == 6
+        date = 2
+      end
+    elsif /Tuesday/i.match(day)
+      if now.wday == 0
+        date = 2
+      elsif now.wday == 1
+        date = 1
+      elsif now.wday == 2
+        date = 0
+      elsif now.wday == 3
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 4
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 5
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 6
+        date = 3
+      end
+    elsif /Wednesday/i.match(day)
+      if now.wday == 0
+        date = 3
+      elsif now.wday == 1
+        date = 2
+      elsif now.wday == 2
+        date = 1
+      elsif now.wday == 3
+        date = 0
+      elsif now.wday == 4
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 5
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 6
+        date = "Sorry but I can only get movie times for the next three days"
+      end
+    elsif /Thursday/i.match(day)
+      if now.wday == 0
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 1
+        date = 3
+      elsif now.wday == 2
+        date = 2
+      elsif now.wday == 3
+        date = 1
+      elsif now.wday == 4
+        date = 0
+      elsif now.wday == 5
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 6
+        date = "Sorry but I can only get movie times for the next three days"
+      end
+    elsif /Friday/i.match(day)
+      if now.wday == 0
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 1
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 2
+        date = 3
+      elsif now.wday == 3
+        date = 2
+      elsif now.wday == 4
+        date = 1
+      elsif now.wday == 5
+        date = 0
+      elsif now.wday == 6
+        date = "Sorry but I can only get movie times for the next three days"
+      end
+    elsif /Saturday/i.match(day)
+      if now.wday == 0
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 1
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 2
+        date = "Sorry but I can only get movie times for the next three days"
+      elsif now.wday == 3
+        date = 3
+      elsif now.wday == 4
+        date = 2
+      elsif now.wday == 5
+        date = 1
+      elsif now.wday == 6
+        date = 0
+      end
+    end
+    if date.is_a? (Integer)
+      if location.country == "United States"
+        movies = GoogleShowtimes.for("#{location.city}, #{location.state}&date=#{date}")
+        movies = organizeByFilm(movies)
+      else
+        movies = GoogleShowtimes.for("#{location.city}, #{location.country}&date=#{date}")
+        movies = organizeByFilm(movies)
+      end
+      showtimesDisplay_Movie(movies)
+    else
+      say date
+    end
     request_completed
   end
   
@@ -446,7 +580,7 @@ end
         theaterMap.detailType = "BUSINESS_ITEM"
         map_snippet.items << theaterMap
       end
-      z = z + 1
+      z += 1
       sleep 0.1 # Because I occasionally get a crash from making too many google places requests too close together
     end
     theatersView.views << map_snippet
