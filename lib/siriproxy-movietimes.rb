@@ -286,7 +286,7 @@ end
       while y < shows.length do
         movieArray << SiriAnswerLine.new("#{shows[y][:title]}")
         movieArray << SiriAnswerLine.new("#{shows[y][:showtimes].compact.join(', ')}")
-        movieArray << SiriAnswerLine.new("line","https://lh6.googleusercontent.com/-yqZpJuCpqlc/UAh6QyCsnJI/AAAAAAAAAF4/bUeaewYVf5w/s600/Line.jpg")
+        movieArray << SiriAnswerLine.new("line","https://lh4.googleusercontent.com/-4SvQ10l0FUw/UBbsaIuRHPI/AAAAAAAAAGU/PUsZctqN58I/w512-h1-k/horizontalline.jpg")
         y += 1
       end
       list2 = SiriAnswer.new("#{theaters[x][:info][:name]}:", movieArray)
@@ -324,7 +324,7 @@ end
       while y < showings.length do
         theaterArray << SiriAnswerLine.new("#{showings[y][:theater]}")
         theaterArray << SiriAnswerLine.new("#{showings[y][:showtimes].compact.join(', ')}")
-        theaterArray << SiriAnswerLine.new("line","https://lh6.googleusercontent.com/-yqZpJuCpqlc/UAh6QyCsnJI/AAAAAAAAAF4/bUeaewYVf5w/s600/Line.jpg")
+        theaterArray << SiriAnswerLine.new("line","https://lh4.googleusercontent.com/-4SvQ10l0FUw/UBbsaIuRHPI/AAAAAAAAAGU/PUsZctqN58I/w512-h1-k/horizontalline.jpg")
         y += 1
       end
       list2 = SiriAnswer.new("#{movies[x][:name]}:", theaterArray)
