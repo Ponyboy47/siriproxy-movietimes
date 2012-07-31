@@ -1,6 +1,10 @@
 Be sure to copy everything from config-info.yml into your config.yml
-This plugin will read you the movie times for local theaters
-** This plugin will not work on anyone else's proxies because I have made certain additions to my proxy that allow me to do more with my plugins. I will share the code I have added to my proxy when I've worked the bugs out of it. **
+
+***This plugin will read you the movie times for local theaters***
+
+** I have made certain additions to my proxy that allow me to do more with my plugins. **
+*I am still working the bugs out of the code, but it is available on the experimental branch of the TLP. Copy the lib/siri_objects.rb file to your proxy and update your proxy's version then do a rake install. After that, this plugin should work on your proxies.*
+
 Ask Siri for "Theater Showtimes" if you know which theater you will be going to but are not sure which movie.
 Ask Siri for "Movie Showtimes" if you know which movie you want to see but are not sure which theater to see it at.
 Ask Siri for "Movie times for (today|tomorrow|day of the week)" if you want showtimes for a movie in the future (for up to the next 3 days).

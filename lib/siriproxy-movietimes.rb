@@ -533,12 +533,12 @@ end
         theaterMapLocation.longitude = theater.lng
         theaterMapLocation.postalCode = theater.zip
         theaterMap.location = theaterMapLocation
-        theaterMapCommands = SiriSnippetAttributeOpenedCommand.new
-        theaterMapCommands.request_id = "Get-Current-Movie-Theater"
-        theaterMapCommands.attributeValue = "#{z}"
-        theaterMapCommands.attributeName = "#{theaters[z][:info][:name]}"
+#        theaterMapCommands = SiriSnippetAttributeOpenedCommand.new
+#        theaterMapCommands.request_id = "Get-Current-Movie-Theater"
+#        theaterMapCommands.attributeValue = "#{z}"
+#        theaterMapCommands.attributeName = "#{theaters[z][:info][:name]}"
         commands = SiriSendCommands.new
-        commands.commands << theaterMapCommands
+#        commands.commands << theaterMapCommands
         theaterMap.commands << commands
         theaterMap.identifier = ""
         theaterMap.detailType = "BUSINESS_ITEM"
@@ -569,12 +569,12 @@ end
         theaterMapLocation.longitude = theater.lng
         theaterMapLocation.postalCode = theater.zip
         theaterMap.location = theaterMapLocation
-        theaterMapCommands = SiriSnippetAttributeOpenedCommand.new
-        theaterMapCommands.request_id = "Get-Current-Movie-Theater"
-        theaterMapCommands.attributeValue = "#{z}"
-        theaterMapCommands.attributeName = "#{theaters[z][:info][:name]}"
+#        theaterMapCommands = SiriSnippetAttributeOpenedCommand.new
+#        theaterMapCommands.request_id = "Get-Current-Movie-Theater"
+#        theaterMapCommands.attributeValue = "#{z}"
+#        theaterMapCommands.attributeName = "#{theaters[z][:info][:name]}"
         commands = SiriSendCommands.new
-        commands.commands << theaterMapCommands
+#        commands.commands << theaterMapCommands
         theaterMap.commands << commands
         theaterMap.identifier = ""
         theaterMap.detailType = "BUSINESS_ITEM"
@@ -585,10 +585,10 @@ end
     end
     theatersView.views << map_snippet
     send_object theatersView
-#    showtimes = confirm "Would you like showtimes for one of these theaters?"
-#    if showtimes
-#      showtimesDisplay_Theater(theaters)
-#    end
+    showtimes = confirm "Would you like showtimes for one of these theaters?"
+    if showtimes
+      showtimesDisplay_Theater(theaters)
+    end
     request_completed
   end
 end
