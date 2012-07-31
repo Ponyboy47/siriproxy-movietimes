@@ -110,11 +110,11 @@ end
       number = 4
     elsif /Five/i.match(num) or /Fifth/i.match(num) or /5/.match(num)
       number = 5
-    elsif num.match(/Six/i) or /6/.match(num)
+    elsif /Six/i.match(num) or /6/.match(num)
       number = 6
-    elsif num.match(/Seven/i) or /7/.match(num)
+    elsif /Seven/i.match(num) or /7/.match(num)
       number = 7
-    elsif num.match(/Eight/i) or /8/.match(num)
+    elsif /Eight/i.match(num) or /8/.match(num)
       number = 8
     elsif /Nine/i.match(num) or /Ninth/i.match(num) or /9/.match(num)
       number = 9
