@@ -335,7 +335,7 @@ end
     end
   end
   
-  listen_for /Theater showtime(?:s)?/i do
+  listen_for /Theater show(?: )?time(?:s)?/i do
     if location.country == "United States"
       movies = GoogleShowtimes.for("#{location.city}, #{location.state}")
       theaters = organizeByTheater(movies)
@@ -347,7 +347,7 @@ end
     request_completed
   end
   
-  listen_for /Movie showtime(?:s)?/i do
+  listen_for /Movie show(?: )?time(?:s)?/i do
     if location.country == "United States"
       movies = GoogleShowtimes.for("#{location.city}, #{location.state}")
       movies = organizeByFilm(movies)
